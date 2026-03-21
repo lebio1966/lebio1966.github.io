@@ -18,7 +18,7 @@ Réviser et consolider les connaissances en service en restauration de façon lu
 
 ## 🔗 Lien du jeu
 
-👉 **https://headwaiter.github.io**
+👉 **https://lebio1966.github.io**
 
 ## 📱 QR Code
 
