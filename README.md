@@ -42,4 +42,4 @@ Aligné sur le REAC **Titre Professionnel Serveur en Restauration** — compéte
 
 ## 👨‍🏫 Auteur
 
-Formateur : Philippe — CFA / Centre de formation, Saint-Étienne
+Formateur : Philippe — CFA / Centre de formation, Cabestany
