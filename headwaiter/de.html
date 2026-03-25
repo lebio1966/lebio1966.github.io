@@ -1086,6 +1086,8 @@ const QUESTIONS_DB = {"BOISSONS":[{"id":"b1","question":"Agricultural rum (rhum 
 //  PERSISTENCE localStorage — Questions
 // ═══════════════════════════════════════════════════════
 const STORAGE_KEY = 'headwaiter_questions_v1_de';
+// Nettoyage automatique de l'ancienne clé partagée
+try { localStorage.removeItem('headwaiter_questions_v1'); } catch(e) {}
 
 function saveQuestionsToStorage() {
   try {

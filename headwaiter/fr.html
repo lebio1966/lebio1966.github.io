@@ -1086,6 +1086,8 @@ const QUESTIONS_DB = {"BOISSONS":[{"id":"b1","question":"Le rhum agricole est é
 //  PERSISTENCE localStorage — Questions
 // ═══════════════════════════════════════════════════════
 const STORAGE_KEY = 'headwaiter_questions_v1_fr';
+// Nettoyage automatique de l'ancienne clé partagée
+try { localStorage.removeItem('headwaiter_questions_v1'); } catch(e) {}
 
 function saveQuestionsToStorage() {
   try {
