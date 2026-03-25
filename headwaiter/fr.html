@@ -2182,8 +2182,8 @@ function showQuestionModal(q, cat) {
   const content = document.getElementById('modal-content');
 
   const catLabels = {
-    VINS: '🍾 Vins', BOISSONS: '🥃 Boissons', FROMAGES: '🧀 Fromages',
-    COCKTAILS: '🍹 Cocktails', AUTRES: '📋 Autres',
+    VINS: '🍾 '+TR('board').VINS, BOISSONS: '🥃 '+TR('board').BOISSONS, FROMAGES: '🧀 '+TR('board').FROMAGES,
+    COCKTAILS: '🍹 '+TR('board').COCKTAILS, AUTRES: '📋 '+TR('board').AUTRE,
   };
   const catClass = {
     VINS: 'cat-vins', BOISSONS: 'cat-boissons', FROMAGES: 'cat-fromages',
@@ -2224,7 +2224,7 @@ function showQuestionModal(q, cat) {
         <div class="proposition-item" style="flex:1;text-align:center;font-size:16px;font-weight:700;"
           onclick="checkVraiFaux('FAUX', '${correctVraiFaux}')">❌ FAUX</div>
       </div>`;
-    hintsHTML = `<div style="font-size:12px;color:rgba(212,184,150,0.4);text-align:center;font-style:italic;margin-bottom:12px;">Cliquez VRAI ou FAUX</div>`;
+    hintsHTML = `<div style="font-size:12px;color:rgba(212,184,150,0.4);text-align:center;font-style:italic;margin-bottom:12px;">${TR('click_tf')}</div>`;
 
   } else if (propsHaveLetters && correctLetters.length > 0) {
     const correctJSON = JSON.stringify(correctLetters);
@@ -2242,10 +2242,10 @@ function showQuestionModal(q, cat) {
       </div>`;
       hintsHTML = `
         <div style="font-size:12px;color:rgba(212,184,150,0.5);text-align:center;font-style:italic;margin-bottom:10px;">
-          ☑ Plusieurs bonnes réponses — cochez toutes les bonnes, puis validez
+          ${TR('multi_hint')}
         </div>
         <div id="answer-btns" style="margin-bottom:12px;">
-          <button class="btn btn-gold" onclick="checkMultiAnswer(${correctJSON})" style="width:100%;">✔ Valider mes choix</button>
+          <button class="btn btn-gold" onclick="checkMultiAnswer(${correctJSON})" style="width:100%;">✔ ${TR('btn_validate')}</button>
         </div>`;
     } else {
       // ── Mode UNE SEULE RÉPONSE ──
@@ -2256,7 +2256,7 @@ function showQuestionModal(q, cat) {
           return `<div class="proposition-item" onclick="checkLetter('${letter}', '${correctLetters[0]}', this)">${p}</div>`;
         }).join('')}
       </div>`;
-      hintsHTML = `<div style="font-size:12px;color:rgba(212,184,150,0.4);text-align:center;font-style:italic;margin-bottom:12px;">Sélectionnez la bonne réponse</div>`;
+      hintsHTML = `<div style="font-size:12px;color:rgba(212,184,150,0.4);text-align:center;font-style:italic;margin-bottom:12px;">${TR('select_ans')}</div>`;
     }
 
   } else if (props.length > 0) {
@@ -2264,14 +2264,14 @@ function showQuestionModal(q, cat) {
       ${props.map(p => `<div class="proposition-item" style="cursor:default;opacity:0.8;">${p}</div>`).join('')}
     </div>`;
     hintsHTML = `<div id="answer-btns" style="margin-bottom:12px;">
-      <button class="btn btn-primary" onclick="revealOpenQuestion()" style="width:100%;">👁 Révéler la réponse</button>
+      <button class="btn btn-primary" onclick="revealOpenQuestion()" style="width:100%;">👁 ${TR('btn_reveal')}</button>
     </div>`;
 
   } else {
     hintsHTML = `
-      <div style="font-size:13px;color:rgba(212,184,150,0.5);margin-bottom:16px;font-style:italic;">Question ouverte — discutez en groupe, puis révélez.</div>
+      <div style="font-size:13px;color:rgba(212,184,150,0.5);margin-bottom:16px;font-style:italic;">${TR('open_q')}</div>
       <div id="answer-btns" style="margin-bottom:12px;">
-        <button class="btn btn-primary" onclick="revealOpenQuestion()" style="width:100%;">👁 Révéler la réponse</button>
+        <button class="btn btn-primary" onclick="revealOpenQuestion()" style="width:100%;">👁 ${TR('btn_reveal')}</button>
       </div>`;
   }
 
@@ -2286,7 +2286,7 @@ function showQuestionModal(q, cat) {
       <div id="result-panel" style="flex:0 0 44%;min-width:0;display:flex;flex-direction:column;gap:8px;">
         <div id="answer-area" style="display:none;">
           <div class="answer-area">
-            <div class="answer-label">✅ Réponse correcte</div>
+            <div class="answer-label">✅ ${TR('answer_label')}</div>
             <div class="answer-text">${q.reponse}</div>
           </div>
         </div>
@@ -2355,8 +2355,8 @@ function revealOpenQuestion() {
   document.getElementById('answer-area').style.display = 'block';
   document.getElementById('answer-btns').innerHTML = `
     <div style="display:flex;gap:10px;margin-bottom:12px;">
-      <button class="btn btn-gold" onclick="markAnswer(true)" style="flex:1;">✓ Bonne réponse</button>
-      <button class="btn btn-danger" onclick="markAnswer(false)" style="flex:1;">✗ Mauvaise réponse</button>
+      <button class="btn btn-gold" onclick="markAnswer(true)" style="flex:1;">${TR('btn_correct')}</button>
+      <button class="btn btn-danger" onclick="markAnswer(false)" style="flex:1;">${TR('btn_wrong')}</button>
     </div>
   `;
 }
@@ -2397,7 +2397,7 @@ function markAnswer(correct) {
     player.score += ptsWrong;
     zone.innerHTML = `
       <div class="result-banner wrong" style="display:block;animation:fadeIn .3s ease;">
-        😅 Mauvaise réponse… La bonne réponse est affichée ci-dessus. +${ptsWrong} pts
+        ${TR('result_wrong')} +${ptsWrong} pts
       </div>`;
   }
 
@@ -2861,12 +2861,12 @@ const TRANSLATIONS = {
     passing_start:'🎩 Passage par le départ ! +5 points',
     continue_btn:'Continuer ▶', ok_btn:'OK ✓',
     result_correct:'🎉 Bonne réponse !',
-    result_wrong:'😅 Mauvaise réponse… La bonne réponse est affichée ci-dessus.',
-    house_placed:'🏠 Maison posée !', answer_label:'✅ Réponse correcte',
-    click_tf:'Cliquez VRAI ou FAUX', select_ans:'Sélectionnez la bonne réponse',
-    multi_hint:'☑ Plusieurs bonnes réponses — cochez toutes les bonnes, puis validez',
-    btn_validate:'✔ Valider mes choix', btn_reveal:'👁 Révéler la réponse',
-    open_q:"Question ouverte — discutez en groupe, puis révélez.",
+    result_wrong:'${TR('result_wrong')}',
+    house_placed:'🏠 Maison posée !', answer_label:'✅ ${TR('answer_label')}',
+    click_tf:'${TR('click_tf')}', select_ans:'${TR('select_ans')}',
+    multi_hint:'${TR('multi_hint')}',
+    btn_validate:'✔ ${TR('btn_validate')}', btn_reveal:'👁 ${TR('btn_reveal')}',
+    open_q:"${TR('open_q')}",
     btn_correct:'✓ Bonne réponse', btn_wrong:'✗ Mauvaise réponse',
     quit_confirm:'Quitter la partie en cours ?',
     no_game:'Aucune partie en cours', success_rate:'% de réussite',
@@ -2887,6 +2887,9 @@ const TRANSLATIONS = {
     th_num:'N°', th_q:'Question / Propositions', th_ans:'Réponse', th_act:'Actions',
     btn_edit:'✏️ Modifier', btn_del:'🗑 Supprimer',
     level_names:['Commis','Chef de Rang',"Maître d'Hôtel"],
+        result_correct:'🎉 Correct !',
+    btn_correct:'✓ Bonne réponse',
+    btn_wrong:'✗ Mauvaise réponse',
     board:{ START:'DÉPART',VINS:'VINS',BOISSONS:'ALCOOL',FROMAGES:'FROMAGE',
       COCKTAILS:'COCKTAIL',CHANCE:'CHANCE',COMMUNAUTE:'COMMUNAUTÉ',
       PETITE_PAUSE:'PAUSE',PAUSE_COIN:'PAUSE',BAR:'BAR',AUTRE:'AUTRES',
