@@ -1118,8 +1118,25 @@ function resetQuestionsToDefault() {
   location.reload();
 }
 
-// Charger les questions sauvegardées au démarrage
-loadQuestionsFromStorage();
+// Charger les questions sauvegardées au démarrage (uniquement si même langue)
+(function() {
+  try {
+    const saved = localStorage.getItem('headwaiter_questions_v1_fr');
+    if (saved) {
+      const data = JSON.parse(saved);
+      // Vérifier que les questions stockées sont bien en fr (pas en FR)
+      const firstQ = data['BOISSONS'] && data['BOISSONS'][0] && data['BOISSONS'][0].question || '';
+      const frRef = 'Le rhum agricole est élaboré à partir de';
+      if (firstQ.includes(frRef)) {
+        // Questions en français détectées → nettoyer
+        localStorage.removeItem('headwaiter_questions_v1_fr');
+        console.log('Questions FR détectées dans fr → nettoyage');
+      } else {
+        loadQuestionsFromStorage();
+      }
+    }
+  } catch(e) { console.warn('Erreur vérification langue:', e); }
+})();
 
 // ═══════════════════════════════════════════════════════
 //  BOARD DEFINITION - 40 cases type Monopoly
