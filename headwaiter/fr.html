@@ -3086,6 +3086,11 @@ function TR(k) { return (TRANSLATIONS[_lang]||TRANSLATIONS.fr)[k] || TRANSLATION
 
 function setLang(lang) {
   if (!TRANSLATIONS[lang]) return;
+  // Si la langue demandée est différente de ce fichier, rediriger
+  if (lang !== 'fr') {
+    window.location.href = lang + '.html';
+    return;
+  }
   _lang = lang;
   document.querySelectorAll('#lang-bar .lang-btn').forEach(btn => {
     const isActive = btn.dataset.lang === lang;
@@ -3156,11 +3161,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </script>
 <div id="lang-bar" style="position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:50;background:rgba(0,0,0,0.3);border-radius:40px;padding:5px 12px;border:1px solid rgba(255,255,255,0.12);">
-  <button class="lang-btn active" data-lang="fr" title="Français" style="background:none;border:none;cursor:pointer;font-size:22px;padding:2px 4px;opacity:0.5;transition:opacity .2s,transform .2s;line-height:1;">🇫🇷</button>
-  <button class="lang-btn" data-lang="en" title="English" style="background:none;border:none;cursor:pointer;font-size:22px;padding:2px 4px;opacity:0.5;transition:opacity .2s,transform .2s;line-height:1;">🇬🇧</button>
-  <button class="lang-btn" data-lang="de" title="Deutsch" style="background:none;border:none;cursor:pointer;font-size:22px;padding:2px 4px;opacity:0.5;transition:opacity .2s,transform .2s;line-height:1;">🇩🇪</button>
-  <button class="lang-btn" data-lang="es" title="Español" style="background:none;border:none;cursor:pointer;font-size:22px;padding:2px 4px;opacity:0.5;transition:opacity .2s,transform .2s;line-height:1;">🇪🇸</button>
-  <button class="lang-btn" data-lang="it" title="Italiano" style="background:none;border:none;cursor:pointer;font-size:22px;padding:2px 4px;opacity:0.5;transition:opacity .2s,transform .2s;line-height:1;">🇮🇹</button>
+  <button class="lang-btn" data-lang="fr" title="Français" style="background:none;border:none;cursor:pointer;font-size:22px;padding:2px 4px;transition:opacity .2s,transform .2s;line-height:1;opacity:1;transform:scale(1.15);filter:drop-shadow(0 0 4px rgba(255,220,100,0.7));">🇫🇷</button>
+  <button class="lang-btn" data-lang="en" title="English" style="background:none;border:none;cursor:pointer;font-size:22px;padding:2px 4px;transition:opacity .2s,transform .2s;line-height:1;opacity:0.5;">🇬🇧</button>
+  <button class="lang-btn" data-lang="de" title="Deutsch" style="background:none;border:none;cursor:pointer;font-size:22px;padding:2px 4px;transition:opacity .2s,transform .2s;line-height:1;opacity:0.5;">🇩🇪</button>
+  <button class="lang-btn" data-lang="es" title="Español" style="background:none;border:none;cursor:pointer;font-size:22px;padding:2px 4px;transition:opacity .2s,transform .2s;line-height:1;opacity:0.5;">🇪🇸</button>
+  <button class="lang-btn" data-lang="it" title="Italiano" style="background:none;border:none;cursor:pointer;font-size:22px;padding:2px 4px;transition:opacity .2s,transform .2s;line-height:1;opacity:0.5;">🇮🇹</button>
 </div>
 </div><!-- /app-container -->
 </body>
