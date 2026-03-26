@@ -2161,20 +2161,155 @@ function handleEventCard(card) {
     case 'INDICE BONUS':
       state.nextQuestionModifiers.bonusHint = true;
       break;
-    case 'AIDE AMI':
     case 'ANNIVERSAIRE':
-    case 'ANNIVERSAIRE+':
-    case 'LOTERIE':
-    case 'CONCOURS':
+      // Skip turn: pass directly to next player
+      showEventCard(getCardIcon(card.type), card.type, card.effet, true, () => nextTurn());
+      return;
+
     case 'MAISON OFFERTE':
-    case 'MAISON COCKTAIL':
-    case 'CASE DEPART':
-    case 'CASE FROMAGE':
-    case 'CASE VINS':
+    case 'CONCOURS': {
+      // Place a house on the nearest COCKTAILS square (forward direction)
+      const _pos0 = player.position;
+      let _best0 = -1, _dist0 = Infinity;
+      for (let ci = 0; ci < TOTAL_CASES; ci++) {
+        if (BOARD_CASES[ci].type === 'COCKTAILS') {
+          const d = (ci - _pos0 + TOTAL_CASES) % TOTAL_CASES;
+          if (d > 0 && d < _dist0) { _dist0 = d; _best0 = ci; }
+        }
+      }
+      if (_best0 === -1) _best0 = _pos0;
+      state.houses[_best0] = state.houses[_best0] || [];
+      state.houses[_best0].push({ playerIdx: state.currentPlayerIndex, color: player.color });
+      renderHouses();
+      const _msg0 = card.effet + '\n\n🏠 House placed on the nearest Cocktail square!';
+      showEventCard(getCardIcon(card.type), card.type, _msg0, true);
+      return;
+    }
+
+    case 'MAISON COCKTAIL': {
+      // Move token to nearest COCKTAILS square and trigger a Cocktail question
+      const _pos1 = player.position;
+      let _best1 = -1, _dist1 = Infinity;
+      for (let ci = 0; ci < TOTAL_CASES; ci++) {
+        if (BOARD_CASES[ci].type === 'COCKTAILS') {
+          const d = (ci - _pos1 + TOTAL_CASES) % TOTAL_CASES;
+          if (d > 0 && d < _dist1) { _dist1 = d; _best1 = ci; }
+        }
+      }
+      if (_best1 !== -1) { player.position = _best1; movePion(state.currentPlayerIndex); }
+      showEventCard(getCardIcon(card.type), card.type, card.effet, true, () => {
+        showQuestionModal(getNextQuestion('COCKTAILS'), 'COCKTAILS');
+      });
+      return;
+    }
+
+    case 'CASE FROMAGE': {
+      // Move token to nearest FROMAGES square and trigger a Fromages question
+      const _pos2 = player.position;
+      let _best2 = -1, _dist2 = Infinity;
+      for (let ci = 0; ci < TOTAL_CASES; ci++) {
+        if (BOARD_CASES[ci].type === 'FROMAGES') {
+          const d = (ci - _pos2 + TOTAL_CASES) % TOTAL_CASES;
+          if (d > 0 && d < _dist2) { _dist2 = d; _best2 = ci; }
+        }
+      }
+      if (_best2 !== -1) { player.position = _best2; movePion(state.currentPlayerIndex); }
+      showEventCard(getCardIcon(card.type), card.type, card.effet, true, () => {
+        showQuestionModal(getNextQuestion('FROMAGES'), 'FROMAGES');
+      });
+      return;
+    }
+
+    case 'CASE VINS': {
+      // Move token to nearest VINS square and trigger a Vins question
+      const _pos3 = player.position;
+      let _best3 = -1, _dist3 = Infinity;
+      for (let ci = 0; ci < TOTAL_CASES; ci++) {
+        if (BOARD_CASES[ci].type === 'VINS') {
+          const d = (ci - _pos3 + TOTAL_CASES) % TOTAL_CASES;
+          if (d > 0 && d < _dist3) { _dist3 = d; _best3 = ci; }
+        }
+      }
+      if (_best3 !== -1) { player.position = _best3; movePion(state.currentPlayerIndex); }
+      showEventCard(getCardIcon(card.type), card.type, card.effet, true, () => {
+        showQuestionModal(getNextQuestion('VINS'), 'VINS');
+      });
+      return;
+    }
+
+    case 'CASE DEPART': {
+      // Bonus chance: draw a random question from any category
+      const _cats = ['BOISSONS','VINS','FROMAGES','COCKTAILS','AUTRES'];
+      const _cat = _cats[Math.floor(Math.random() * _cats.length)];
+      showEventCard(getCardIcon(card.type), card.type, card.effet, true, () => {
+        showQuestionModal(getNextQuestion(_cat), _cat);
+      });
+      return;
+    }
+
+    case 'LOTERIE':
+    case 'ANNIVERSAIRE+': {
+      // Collect one house from each other team and place them at current position
+      let _gained = 0;
+      for (let _pi = 0; _pi < state.players.length; _pi++) {
+        if (_pi === state.currentPlayerIndex) continue;
+        for (let ci = 0; ci < TOTAL_CASES; ci++) {
+          if (state.houses[ci]) {
+            const _hi = state.houses[ci].findIndex(h => h.playerIdx === _pi);
+            if (_hi !== -1) {
+              const _house = state.houses[ci].splice(_hi, 1)[0];
+              const _cur = player.position;
+              state.houses[_cur] = state.houses[_cur] || [];
+              _house.playerIdx = state.currentPlayerIndex;
+              _house.color = player.color;
+              state.houses[_cur].push(_house);
+              _gained++;
+              break; // one house per team
+            }
+          }
+        }
+      }
+      renderHouses();
+      const _lMsg = _gained > 0
+        ? card.effet + '\n\n🏠 ×' + _gained + ' house(s) transferred to your position!'
+        : card.effet + '\n\n(No houses available from other teams.)';
+      showEventCard(getCardIcon(card.type), card.type, _lMsg, true);
+      return;
+    }
+
     case 'TRICHE':
+      // Penalty: this player must answer 2 questions on their next turn
+      state.nextQuestionModifiers = state.nextQuestionModifiers || {};
+      state.nextQuestionModifiers.doubleQuestion = true;
+      break;
+
     case 'QUESTION IMPOS.':
-    case 'PERDRE MAISON':
-      // Effet narratif — affiché et géré par le groupe
+      // The NEXT player must answer a freeform question posed by the other team
+      state.nextQuestionModifiers = state.nextQuestionModifiers || {};
+      state.nextQuestionModifiers.imposQuestion = (state.currentPlayerIndex + 1) % state.players.length;
+      break;
+
+    case 'PERDRE MAISON': {
+      // Remove one of the current player's houses from the board
+      let _removed = false;
+      for (let ci = 0; ci < TOTAL_CASES; ci++) {
+        if (state.houses[ci]) {
+          const _hi = state.houses[ci].findIndex(h => h.playerIdx === state.currentPlayerIndex);
+          if (_hi !== -1) { state.houses[ci].splice(_hi, 1); _removed = true; break; }
+        }
+      }
+      renderHouses();
+      const _pMsg = _removed
+        ? card.effet + '\n\n🏠 One of your houses has been removed!'
+        : card.effet + '\n\n(You had no house to lose.)';
+      showEventCard(getCardIcon(card.type), card.type, _pMsg, true);
+      return;
+    }
+
+    case 'AIDE AMI':
+      // Flag: player may consult someone for the next question
+      state.nextQuestionModifiers = state.nextQuestionModifiers || {};
+      state.nextQuestionModifiers.aideAmi = true;
       break;
   }
 
@@ -2249,6 +2384,15 @@ function showQuestionModal(q, cat) {
   // ── Appliquer les modifiers de la carte précédente ──────────────
   const mods = state.nextQuestionModifiers || {};
   state.nextQuestionModifiers = {}; // Reset après usage
+
+  // TRICHE : double question — answer this one, then immediately get a 2nd
+  const isDoubleQuestion = !!mods.doubleQuestion;
+
+  // QUESTION IMPOS. : flag shown in question header for next player
+  const isImposQuestion = (typeof mods.imposQuestion !== 'undefined');
+
+  // AIDE AMI : show banner
+  const hasAideAmi = !!mods.aideAmi;
 
   // 50/50 ou SUPPRIMER REPONSE : réduire les propositions
   let props_override = null;
@@ -2389,6 +2533,9 @@ function showQuestionModal(q, cat) {
     ${mods.removeOne ? '<div style="background:rgba(239,159,39,.15);border:1px solid rgba(239,159,39,.4);border-radius:8px;padding:4px 10px;font-size:11px;color:#EF9F27;margin-bottom:6px;text-align:center;">⚡ 1 mauvaise réponse supprimée</div>' : ''}
     ${mods.timer30 ? '<div id="q-timer" style="background:rgba(255,80,80,.15);border:1px solid rgba(255,80,80,.4);border-radius:8px;padding:4px 10px;font-size:13px;font-weight:700;color:#ff5050;margin-bottom:6px;text-align:center;">⏱ 30s</div>' : ''}
     ${mods.soloAnswer ? '<div style="background:rgba(127,119,221,.15);border:1px solid rgba(127,119,221,.4);border-radius:8px;padding:4px 10px;font-size:11px;color:#7F77DD;margin-bottom:6px;text-align:center;">👤 Réponse solo — sans concertation</div>' : ''}
+    ${mods.doubleQuestion ? '<div style=\"background:rgba(255,60,60,.15);border:1px solid rgba(255,60,60,.5);border-radius:8px;padding:4px 10px;font-size:11px;color:#ff6060;margin-bottom:6px;text-align:center;\">⚠️ TRICHE — 2ème question sur ce tour !</div>' : ''}
+    ${isImposQuestion ? '<div style=\"background:rgba(180,0,180,.15);border:1px solid rgba(180,0,180,.5);border-radius:8px;padding:4px 10px;font-size:11px;color:#cc44cc;margin-bottom:6px;text-align:center;\">🎯 QUESTION IMPOSSIBLE — Posée par l\'équipe adverse !</div>' : ''}
+    ${hasAideAmi ? '<div style=\"background:rgba(0,180,120,.15);border:1px solid rgba(0,180,120,.5);border-radius:8px;padding:4px 10px;font-size:11px;color:#00bb88;margin-bottom:6px;text-align:center;\">🤝 AIDE AMI — Vous pouvez consulter quelqu\'un !</div>' : ''}
     <div class="modal-question">${q.question}</div>
     <div style="display:flex;gap:12px;align-items:flex-start;">
       <div style="flex:1;min-width:0;">
@@ -2411,6 +2558,15 @@ function showQuestionModal(q, cat) {
   modal.classList.add('active');
   modal._currentQuestion = q;
   modal._currentCat = cat;
+
+  // TRICHE: after this question closes, trigger a 2nd question automatically
+  if (isDoubleQuestion) {
+    modal._callback = () => {
+      const _cats = ['BOISSONS','VINS','FROMAGES','COCKTAILS','AUTRES'];
+      const _cat2 = _cats[Math.floor(Math.random() * _cats.length)];
+      showQuestionModal(getNextQuestion(_cat2), _cat2);
+    };
+  }
 }
 
 // ── Coche/décoche une proposition multi-réponses ──
