@@ -2807,7 +2807,10 @@ function showToast(msg) {
 // ═══════════════════════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════════════════════
-renderLobbyPlayers();
+// Initialiser après DOM prêt
+if (document.getElementById('player-list')) {
+  renderLobbyPlayers();
+}
 
 // Resize board : observer le conteneur gauche
 window.addEventListener('resize', () => {
@@ -2825,16 +2828,15 @@ if (window.ResizeObserver) {
   if (bc) ro.observe(bc);
 }
 
-// Close modals on overlay click
-document.getElementById('question-modal').addEventListener('click', function(e) {
-  if (e.target === this) closeQuestionModal();
-});
-document.getElementById('add-question-modal').addEventListener('click', function(e) {
-  if (e.target === this) closeModal('add-question-modal');
-});
-document.getElementById('edit-question-modal').addEventListener('click', function(e) {
-  if (e.target === this) closeModal('edit-question-modal');
-});
+// Close modals on overlay click (null-safe)
+(function() {
+  var qm = document.getElementById('question-modal');
+  if (qm) qm.addEventListener('click', function(e) { if (e.target === this) closeQuestionModal(); });
+  var am = document.getElementById('add-question-modal');
+  if (am) am.addEventListener('click', function(e) { if (e.target === this) closeModal('add-question-modal'); });
+  var em = document.getElementById('edit-question-modal');
+  if (em) em.addEventListener('click', function(e) { if (e.target === this) closeModal('edit-question-modal'); });
+})();
 
 
 // ═══════════════════════════════════════════════════════
@@ -2861,12 +2863,12 @@ const TRANSLATIONS = {
     passing_start:'🎩 Passage par le départ ! +5 points',
     continue_btn:'Continuer ▶', ok_btn:'OK ✓',
     result_correct:'🎉 Bonne réponse !',
-    result_wrong:'${TR('result_wrong')}',
-    house_placed:'🏠 Maison posée !', answer_label:'✅ ${TR('answer_label')}',
-    click_tf:'${TR('click_tf')}', select_ans:'${TR('select_ans')}',
-    multi_hint:'${TR('multi_hint')}',
-    btn_validate:'✔ ${TR('btn_validate')}', btn_reveal:'👁 ${TR('btn_reveal')}',
-    open_q:"${TR('open_q')}",
+    result_wrong:'😅 Mauvaise réponse… La bonne réponse est affichée ci-dessus.',
+    house_placed:'🏠 Maison posée !', answer_label:'✅ Réponse correcte',
+    click_tf:'Cliquez VRAI ou FAUX', select_ans:'Sélectionnez la bonne réponse',
+    multi_hint:'☑ Plusieurs bonnes réponses — cochez toutes les bonnes, puis validez',
+    btn_validate:'✔ Valider mes choix', btn_reveal:'👁 Révéler la réponse',
+    open_q:'Question ouverte — discutez en groupe, puis révélez.',
     btn_correct:'✓ Bonne réponse', btn_wrong:'✗ Mauvaise réponse',
     quit_confirm:'Quitter la partie en cours ?',
     no_game:'Aucune partie en cours', success_rate:'% de réussite',
