@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#1B0D61">
@@ -843,6 +843,12 @@
 
 <!-- ══════════ SCREEN 4: GAME ══════════ -->
 <div class="screen hidden" id="game-screen">
+  <!-- Bouton fullscreen -->
+  <button id="btn-fullscreen" onclick="toggleFullscreen()" 
+    style="position:fixed;top:8px;right:50px;z-index:200;background:rgba(0,0,0,0.3);
+    border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:rgba(255,255,255,0.5);
+    font-size:16px;padding:4px 8px;cursor:pointer;line-height:1;" 
+    title="Plein écran">⛶</button>
   <div class="game-layout">
 
     <!-- COLONNE GAUCHE : PLATEAU -->
@@ -1318,6 +1324,7 @@ function startGame() {
   state.inPrison = {};
 
   showScreen('game-screen');
+  enterFullscreen();
   // setTimeout 50ms : le browser a le temps de calculer offsetWidth après display:none → block
   setTimeout(() => {
     drawBoard();
@@ -3242,6 +3249,33 @@ function applyLang() {
   setText('t-btn-home', TR('btn_home')); setText('t-btn-replay', TR('btn_replay'));
   setText('t-roll', TR('roll'));
 }
+
+
+// ── FULLSCREEN ─────────────────────────────────────────────────────
+function enterFullscreen() {
+  const el = document.documentElement;
+  try {
+    if (el.requestFullscreen) {
+      el.requestFullscreen().catch(() => {});
+    } else if (el.webkitRequestFullscreen) {
+      el.webkitRequestFullscreen(); // Safari desktop
+    } else if (el.mozRequestFullScreen) {
+      el.mozRequestFullScreen();
+    } else if (el.msRequestFullscreen) {
+      el.msRequestFullscreen();
+    }
+  } catch(e) {}
+  // iOS Safari: masquer la barre d'adresse via scroll
+  setTimeout(() => { window.scrollTo(0, 1); }, 300);
+}
+
+function exitFullscreen() {
+  try {
+    if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+  } catch(e) {}
+}
+// ── FIN FULLSCREEN ─────────────────────────────────────────────────
 
 // Attach lang buttons after DOM is ready (avoids "not defined" error)
 document.addEventListener('DOMContentLoaded', function() {
