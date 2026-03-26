@@ -749,10 +749,10 @@
   <div class="deco-line"><span>✦</span></div>
   <div class="sep"></div>
   <div style="width:100%;max-width:360px;display:flex;flex-direction:column;gap:10px;">
-    <button id="t-btn-new" class="btn btn-gold" onclick="showScreen('lobby-screen')">🎮 Nouvelle Partie</button>
-    <button id="t-btn-join" class="btn btn-primary" onclick="showScreen('join-screen')">📲 Rejoindre une Partie</button>
-    <button id="t-btn-admin" class="btn btn-outline" onclick="showScreen('admin-screen')">⚙️ Gestion des Questions</button>
-    <button id="t-btn-rules" class="btn btn-outline" onclick="showScreen('rules-screen')">📖 Règles du Jeu</button>
+    <button id="t-btn-new" class="btn btn-gold" onclick="showScreen('lobby-screen')">🎮 Nueva Partida</button>
+    <button id="t-btn-join" class="btn btn-primary" onclick="showScreen('join-screen')">📲 Unirse a una Partida</button>
+    <button id="t-btn-admin" class="btn btn-outline" onclick="showScreen('admin-screen')">⚙️ Gestión de Preguntas</button>
+    <button id="t-btn-rules" class="btn btn-outline" onclick="showScreen('rules-screen')">📖 Reglas del Juego</button>
   </div>
   <div class="sep"></div>
   <div style="font-size:11px;color:rgba(212,184,150,0.4);text-align:center;letter-spacing:1px;">
@@ -766,7 +766,7 @@
 <div class="screen hidden" id="lobby-screen">
   <div class="logo-wrap" style="margin-bottom:16px;">
     <div class="logo-icon" style="width:60px;height:60px;font-size:30px;">🎮</div>
-    <div id="t-lobby-title" class="logo-title" style="font-size:22px;">Créer une Partie</div>
+    <div id="t-lobby-title" class="logo-title" style="font-size:22px;">Crear una Partida</div>
   </div>
 
   <div class="card">
@@ -778,21 +778,21 @@
     <div id="tab-solo">
       <div id="players-setup" style="margin-bottom:16px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-          <div id="t-players-label" class="card-title" style="margin-bottom:0;font-size:16px;">Joueurs</div>
+          <div id="t-players-label" class="card-title" style="margin-bottom:0;font-size:16px;">Jugadores</div>
           <button class="btn btn-primary btn-sm" onclick="addPlayer()" id="add-player-btn">+ Ajouter</button>
         </div>
         <div id="player-list"></div>
       </div>
       <div class="input-group">
-        <label id="t-turns-label">Nombre de tours</label>
+        <label id="t-turns-label">Número de turnos</label>
         <select id="max-turns-select">
-          <option id="t-opt15" value="15">15 tours (rapide ~20 min)</option>
-          <option id="t-opt25" value="25" selected>25 tours (normal ~35 min)</option>
-          <option id="t-opt40" value="40">40 tours (long ~60 min)</option>
-          <option id="t-optinf" value="0">Illimité (jusqu'à abandon)</option>
+          <option id="t-opt15" value="15">15 turnos (rápido ~20 min)</option>
+          <option id="t-opt25" value="25" selected>25 turnos (normal ~35 min)</option>
+          <option id="t-opt40" value="40">40 turnos (largo ~60 min)</option>
+          <option id="t-optinf" value="0">Ilimitado (hasta abandonar)</option>
         </select>
       </div>
-      <button id="t-start-btn" class="btn btn-gold" onclick="startGame()">🎲 Lancer la Partie</button>
+      <button id="t-start-btn" class="btn btn-gold" onclick="startGame()">🎲 Iniciar Partida</button>
     </div>
 
     <div id="tab-online" class="hidden">
@@ -804,10 +804,10 @@
         <label>Votre nom</label>
         <input type="text" id="host-name" placeholder="Ex: Philippe" maxlength="16">
       </div>
-      <button id="t-create-room" class="btn btn-gold" onclick="createOnlineRoom()">Créer la salle 🎩</button>
+      <button id="t-create-room" class="btn btn-gold" onclick="createOnlineRoom()">Crear sala 🎩</button>
       <div class="sep"></div>
       <div id="online-waiting" class="hidden">
-        <div id="t-online-label" class="card-title" style="font-size:14px;color:var(--beige);">Joueurs connectés</div>
+        <div id="t-online-label" class="card-title" style="font-size:14px;color:var(--beige);">Jugadores conectados</div>
         <div id="online-players-list" class="waiting-players"></div>
         <button class="btn btn-primary" onclick="startOnlineGame()" id="start-online-btn">Démarrer (min. 2)</button>
       </div>
@@ -815,14 +815,14 @@
   </div>
 
   <div class="sep"></div>
-  <button class="btn btn-outline" style="max-width:200px;" onclick="showScreen('home-screen')">← Retour</button>
+  <button class="btn btn-outline" style="max-width:200px;" onclick="showScreen('home-screen')">← Volver</button>
 </div>
 
 <!-- ══════════ SCREEN 3: JOIN ══════════ -->
 <div class="screen hidden" id="join-screen">
   <div class="logo-wrap" style="margin-bottom:16px;">
     <div class="logo-icon" style="width:60px;height:60px;font-size:30px;">📲</div>
-    <div id="t-join-title" class="logo-title" style="font-size:22px;">Rejoindre</div>
+    <div id="t-join-title" class="logo-title" style="font-size:22px;">Unirse</div>
   </div>
   <div class="card">
     <div class="input-group">
@@ -833,12 +833,12 @@
       <label>Code de la partie</label>
       <input type="text" id="join-code" placeholder="XXXX" maxlength="6" style="text-align:center;font-size:28px;letter-spacing:6px;font-family:'Cinzel Decorative',serif;" oninput="this.value=this.value.toUpperCase()">
     </div>
-    <button class="btn btn-gold" onclick="joinRoom()">Rejoindre la Partie 🎮</button>
+    <button class="btn btn-gold" onclick="joinRoom()">Unirse a la Partida 🎮</button>
     <div class="sep"></div>
     <div id="join-status" style="text-align:center;font-size:14px;color:var(--beige);min-height:20px;"></div>
   </div>
   <div class="sep"></div>
-  <button class="btn btn-outline" style="max-width:200px;" onclick="showScreen('home-screen')">← Retour</button>
+  <button class="btn btn-outline" style="max-width:200px;" onclick="showScreen('home-screen')">← Volver</button>
 </div>
 
 <!-- ══════════ SCREEN 4: GAME ══════════ -->
@@ -871,7 +871,7 @@
 
       <!-- JOUEURS -->
       <div class="players-panel">
-        <div class="players-panel-title">Classement</div>
+        <div class="players-panel-title">Clasificación</div>
         <div id="mini-players"></div>
       </div>
 
@@ -888,7 +888,7 @@
           <div id="dice-result" style="font-size:12px;color:var(--beige);min-height:16px;"></div>
         </div>
         <button class="btn btn-gold" id="roll-btn" onclick="rollDice()" style="width:auto;padding:10px 16px;font-size:15px;">
-          <span id="t-roll">🎲 Lancer</span>
+          <span id="t-roll">🎲 Lanzar</span>
         </button>
       </div>
 
@@ -901,13 +901,13 @@
 <div class="screen hidden" id="scoreboard-screen">
   <div class="logo-wrap" style="margin-bottom:16px;">
     <div class="logo-icon" style="width:60px;height:60px;font-size:30px;">📊</div>
-    <div id="t-scoreboard-title" class="logo-title" style="font-size:20px;">Classement</div>
+    <div id="t-scoreboard-title" class="logo-title" style="font-size:20px;">Clasificación</div>
   </div>
   <div class="card" style="max-width:360px;">
     <div id="full-scoreboard"></div>
   </div>
   <div class="sep"></div>
-  <button id="t-back-game" class="btn btn-outline" style="max-width:200px;" onclick="showScreen('game-screen')">← Retour au jeu</button>
+  <button id="t-back-game" class="btn btn-outline" style="max-width:200px;" onclick="showScreen('game-screen')">← Volver al juego</button>
 </div>
 
 <!-- ══════════ SCREEN 6: WIN ══════════ -->
@@ -948,7 +948,7 @@
       <div id="admin-stats" style="font-size:13px;color:var(--beige);margin-bottom:12px;"></div>
       <div id="admin-table-container" style="overflow-x:auto;max-height:55vh;overflow-y:auto;"></div>
     </div>
-    <button class="btn btn-outline" onclick="showScreen('home-screen')">← Retour</button>
+    <button class="btn btn-outline" onclick="showScreen('home-screen')">← Volver</button>
   </div>
 </div>
 
@@ -956,7 +956,7 @@
 <div class="screen hidden" id="rules-screen">
   <div style="width:100%;max-width:440px;">
     <div class="logo-wrap" style="margin-bottom:12px;">
-      <div class="logo-title" style="font-size:20px;">📖 Règles du Jeu</div>
+      <div class="logo-title" style="font-size:20px;">📖 Reglas del Juego</div>
     </div>
     <div class="card">
       <div class="rules-section">
@@ -993,7 +993,7 @@
       </div>
     </div>
     <div class="sep"></div>
-    <button class="btn btn-outline" onclick="showScreen('home-screen')">← Retour</button>
+    <button class="btn btn-outline" onclick="showScreen('home-screen')">← Volver</button>
   </div>
 </div>
 
@@ -1290,7 +1290,7 @@ function removePlayer(i) {
 // ═══════════════════════════════════════════════════════
 function startGame() {
   const names = lobbyPlayers.map(p => p.name.trim()).filter(n => n);
-  if (names.length < 1) { showToast('Ajoutez au moins un joueur !'); return; }
+  if (names.length < 1) { showToast(TR('toast_player')); return; }
 
   state.maxTurns = parseInt(document.getElementById('max-turns-select').value) || 25;
   state.currentPlayerIndex = 0;
@@ -2487,7 +2487,7 @@ function restartGame() {
 }
 
 function confirmQuitGame() {
-  if (confirm('Quitter la partie en cours ?')) {
+  if (confirm(TR('quit_confirm'))) {
     showScreen('home-screen');
   }
 }
@@ -2497,7 +2497,7 @@ function confirmQuitGame() {
 // ═══════════════════════════════════════════════════════
 function renderFullScoreboard() {
   const el = document.getElementById('full-scoreboard');
-  if (!state.players.length) { el.innerHTML = '<div style="color:var(--beige);text-align:center;">Aucune partie en cours</div>'; return; }
+  if (!state.players.length) { el.innerHTML = '<div style="color:var(--beige);text-align:center;">No hay partida en curso</div>'; return; }
 
   const sorted = [...state.players].sort((a,b) => b.score - a.score);
   el.innerHTML = sorted.map((p, i) => {
@@ -2679,7 +2679,7 @@ function generateRoomCode() {
 
 function createOnlineRoom() {
   const hostName = document.getElementById('host-name').value.trim();
-  if (!hostName) { showToast('Entrez votre prénom !'); return; }
+  if (!hostName) { showToast(TR('toast_name')); return; }
 
   state.isHost = true;
   state.isOnline = true;
@@ -2705,7 +2705,7 @@ function joinRoom() {
   const name = document.getElementById('join-name').value.trim();
   const code = document.getElementById('join-code').value.trim();
 
-  if (!name || !code) { showToast('Remplissez tous les champs'); return; }
+  if (!name || !code) { showToast(TR('toast_fields')); return; }
 
   const roomData = localStorage.getItem(`room_${code}`);
   if (!roomData) { document.getElementById('join-status').textContent = '❌ Partie introuvable'; return; }
@@ -2869,7 +2869,7 @@ const TRANSLATIONS = {
     open_q:"${TR('open_q')}",
     btn_correct:'✓ Bonne réponse', btn_wrong:'✗ Mauvaise réponse',
     quit_confirm:'Quitter la partie en cours ?',
-    no_game:'Aucune partie en cours', success_rate:'% de réussite',
+    no_game:TR('no_game'), success_rate:'% de réussite',
     case_sq:'Case', house_s:'maison', house_p:'maisons',
     good_ans:'bonnes réponses', level_label:'Niveau : ',
     host_badge:'HÔTE', player_default:'Joueur',
