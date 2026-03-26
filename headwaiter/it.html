@@ -2807,7 +2807,10 @@ function showToast(msg) {
 // ═══════════════════════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════════════════════
-renderLobbyPlayers();
+// Initialiser après DOM prêt
+if (document.getElementById('player-list')) {
+  renderLobbyPlayers();
+}
 
 // Resize board : observer le conteneur gauche
 window.addEventListener('resize', () => {
@@ -2825,16 +2828,15 @@ if (window.ResizeObserver) {
   if (bc) ro.observe(bc);
 }
 
-// Close modals on overlay click
-document.getElementById('question-modal').addEventListener('click', function(e) {
-  if (e.target === this) closeQuestionModal();
-});
-document.getElementById('add-question-modal').addEventListener('click', function(e) {
-  if (e.target === this) closeModal('add-question-modal');
-});
-document.getElementById('edit-question-modal').addEventListener('click', function(e) {
-  if (e.target === this) closeModal('edit-question-modal');
-});
+// Close modals on overlay click (null-safe)
+(function() {
+  var qm = document.getElementById('question-modal');
+  if (qm) qm.addEventListener('click', function(e) { if (e.target === this) closeQuestionModal(); });
+  var am = document.getElementById('add-question-modal');
+  if (am) am.addEventListener('click', function(e) { if (e.target === this) closeModal('add-question-modal'); });
+  var em = document.getElementById('edit-question-modal');
+  if (em) em.addEventListener('click', function(e) { if (e.target === this) closeModal('edit-question-modal'); });
+})();
 
 
 // ═══════════════════════════════════════════════════════
