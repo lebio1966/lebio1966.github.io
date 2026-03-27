@@ -718,6 +718,98 @@
   }
   .lang-btn:hover { opacity: 0.85; transform: scale(1.1); }
   .lang-btn.active { opacity: 1; transform: scale(1.15); filter: drop-shadow(0 0 4px rgba(255,220,100,0.6)); }
+
+  /* ══════════════════════════════════════════════════════
+     PATCH 16:9 PC — tous les écrans doivent tenir dans le cadre
+     ════════════════════════════════════════════════════ */
+
+  /* Supprime le scroll sur tous les écrans sauf game */
+  .screen {
+    overflow: hidden !important;
+    padding: 10px 20px !important;
+    justify-content: center !important;
+  }
+
+  /* Logo compact */
+  .logo-wrap { margin-bottom: 10px !important; gap: 4px !important; }
+  .logo-icon  { width: 56px !important; height: 56px !important; font-size: 28px !important; }
+  .logo-title { font-size: clamp(20px, 2.6vw, 34px) !important; }
+  .logo-sub   { font-size: clamp(9px, 0.9vw, 12px) !important; }
+
+  /* Séparateur discret */
+  .sep { margin: 6px 0 !important; }
+  .deco-line { margin: 4px 0 !important; }
+
+  /* Boutons plus petits */
+  .btn {
+    padding: 9px 20px !important;
+    font-size: clamp(12px, 1.1vw, 15px) !important;
+    border-radius: 10px !important;
+  }
+
+  /* Card compacte */
+  .card {
+    padding: 14px 18px !important;
+    border-radius: 14px !important;
+    max-width: 480px !important;
+  }
+
+  /* Tabs compactes */
+  .tabs  { margin-bottom: 10px !important; }
+  .tab   { padding: 7px 16px !important; font-size: 13px !important; }
+
+  /* Champs input plus petits */
+  .input-group         { margin-bottom: 8px !important; }
+  .input-group label   { font-size: 11px !important; }
+  .input-group input,
+  .input-group select  { padding: 8px 12px !important; font-size: 13px !important; }
+
+  /* Setup joueurs compacte */
+  #players-setup { margin-bottom: 8px !important; }
+  .player-row    { padding: 6px 8px !important; margin-bottom: 4px !important; }
+  .player-emoji  { width: 36px !important; height: 36px !important; font-size: 20px !important; }
+
+  /* Barre langues sur home-screen */
+  #lang-bar { margin-top: 4px !important; padding: 4px 8px !important; }
+
+  /* Écran home — boutons principaux */
+  #home-screen .btn { max-width: 320px !important; width: 100% !important; }
+  #home-screen > div[style*="gap:10px"] { gap: 6px !important; }
+
+  /* Écran lobby — card intérieur */
+  #lobby-screen .card { width: 100% !important; max-width: 500px !important; }
+
+  /* Code salle en ligne */
+  .code-display { padding: 8px 12px !important; margin-bottom: 8px !important; }
+  .code-label   { font-size: 11px !important; }
+  .code-value   { font-size: 28px !important; letter-spacing: 10px !important; }
+
+  /* Waiting area */
+  .waiting-players { max-height: 60px !important; overflow-y: auto !important; }
+
+  /* Écran win compact */
+  .win-screen-content { padding: 20px !important; max-width: 400px !important; }
+
+  /* Écran règles — scroll interne uniquement */
+  #rules-screen { overflow: hidden !important; }
+  #rules-screen .card {
+    max-height: calc(56.25vw - 80px) !important;
+    overflow-y: auto !important;
+  }
+
+  /* Écran admin — scroll interne uniquement */
+  #admin-screen { overflow: hidden !important; }
+  #admin-screen .card {
+    max-height: calc(56.25vw - 80px) !important;
+    overflow-y: auto !important;
+  }
+
+  /* Scoreboard — scroll interne */
+  #scoreboard-screen { overflow: hidden !important; }
+  #scoreboard-screen .card {
+    max-height: calc(56.25vw - 100px) !important;
+    overflow-y: auto !important;
+  }
 </style>
 </head>
 <body>
