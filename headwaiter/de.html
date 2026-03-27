@@ -66,24 +66,12 @@
   /* ─── CONTENEUR 16:9 ─── */
   #app-container {
     position: relative;
-    width: 100%;
-    aspect-ratio: 16/9;
-    max-width: 100vw;
-    max-height: 100vh;
+    /* Ratio 16:9 garanti sur tous navigateurs */
+    width:  min(100vw, 177.78vh);
+    height: min(100vh, 56.25vw);
     background: #1B0D61;
     overflow: hidden;
-  }
-  @media (max-aspect-ratio: 16/9) {
-    #app-container {
-      width: 100vw;
-      height: calc(100vw * 9 / 16);
-    }
-  }
-  @media (min-aspect-ratio: 16/9) {
-    #app-container {
-      height: 100vh;
-      width: calc(100vh * 16 / 9);
-    }
+    flex-shrink: 0;
   }
 
   /* ─── SCREEN SYSTEM ─── */
