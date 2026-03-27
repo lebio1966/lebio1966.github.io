@@ -2267,7 +2267,7 @@ function handleEventCard(card) {
     }
 
     case 'MAISON COCKTAIL': {
-      // Move token to nearest COCKTAILS square and trigger a Cocktail question
+      // 1) Afficher la carte → 2) Déplacer le jeton → 3) Déclencher la case d'arrivée
       const _pos1 = player.position;
       let _best1 = -1, _dist1 = Infinity;
       for (let ci = 0; ci < TOTAL_CASES; ci++) {
@@ -2276,15 +2276,18 @@ function handleEventCard(card) {
           if (d > 0 && d < _dist1) { _dist1 = d; _best1 = ci; }
         }
       }
-      if (_best1 !== -1) { player.position = _best1; movePion(state.currentPlayerIndex); }
+      const _target1 = _best1 !== -1 ? _best1 : _pos1;
       showEventCard(getCardIcon(card.type), card.type, card.effet, true, () => {
-        showQuestionModal(getNextQuestion('COCKTAILS'), 'COCKTAILS');
+        animateMove(state.currentPlayerIndex, _pos1, (_target1 - _pos1 + TOTAL_CASES) % TOTAL_CASES, 0, () => {
+          renderHouses();
+          triggerCase(BOARD_CASES[player.position], player);
+        });
       });
       return;
     }
 
     case 'CASE FROMAGE': {
-      // Move token to nearest FROMAGES square and trigger a Fromages question
+      // 1) Afficher la carte → 2) Déplacer le jeton → 3) Déclencher la case d'arrivée
       const _pos2 = player.position;
       let _best2 = -1, _dist2 = Infinity;
       for (let ci = 0; ci < TOTAL_CASES; ci++) {
@@ -2293,15 +2296,18 @@ function handleEventCard(card) {
           if (d > 0 && d < _dist2) { _dist2 = d; _best2 = ci; }
         }
       }
-      if (_best2 !== -1) { player.position = _best2; movePion(state.currentPlayerIndex); }
+      const _target2 = _best2 !== -1 ? _best2 : _pos2;
       showEventCard(getCardIcon(card.type), card.type, card.effet, true, () => {
-        showQuestionModal(getNextQuestion('FROMAGES'), 'FROMAGES');
+        animateMove(state.currentPlayerIndex, _pos2, (_target2 - _pos2 + TOTAL_CASES) % TOTAL_CASES, 0, () => {
+          renderHouses();
+          triggerCase(BOARD_CASES[player.position], player);
+        });
       });
       return;
     }
 
     case 'CASE VINS': {
-      // Move token to nearest VINS square and trigger a Vins question
+      // 1) Afficher la carte → 2) Déplacer le jeton → 3) Déclencher la case d'arrivée
       const _pos3 = player.position;
       let _best3 = -1, _dist3 = Infinity;
       for (let ci = 0; ci < TOTAL_CASES; ci++) {
@@ -2310,19 +2316,20 @@ function handleEventCard(card) {
           if (d > 0 && d < _dist3) { _dist3 = d; _best3 = ci; }
         }
       }
-      if (_best3 !== -1) { player.position = _best3; movePion(state.currentPlayerIndex); }
+      const _target3 = _best3 !== -1 ? _best3 : _pos3;
       showEventCard(getCardIcon(card.type), card.type, card.effet, true, () => {
-        showQuestionModal(getNextQuestion('VINS'), 'VINS');
+        animateMove(state.currentPlayerIndex, _pos3, (_target3 - _pos3 + TOTAL_CASES) % TOTAL_CASES, 0, () => {
+          renderHouses();
+          triggerCase(BOARD_CASES[player.position], player);
+        });
       });
       return;
     }
 
     case 'CASE DEPART': {
-      // Bonus chance: draw a random question from any category
-      const _cats = ['BOISSONS','VINS','FROMAGES','COCKTAILS','AUTRES'];
-      const _cat = _cats[Math.floor(Math.random() * _cats.length)];
+      // Affiche carte puis déclenche triggerCase sur la case actuelle (START ou autre)
       showEventCard(getCardIcon(card.type), card.type, card.effet, true, () => {
-        showQuestionModal(getNextQuestion(_cat), _cat);
+        triggerCase(BOARD_CASES[player.position], player);
       });
       return;
     }
