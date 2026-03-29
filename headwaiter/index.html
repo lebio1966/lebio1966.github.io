@@ -365,11 +365,11 @@
     <!-- Barre de consentement sticky en bas -->
     <div class="consent-bar">
       <div class="consent-box">
-        <label class="cgv-checkbox-row" id="cgv-label">
-          <input type="checkbox" id="cgv-checkbox">
+        <div class="cgv-checkbox-row" id="cgv-label">
+          
           <div class="custom-checkbox" id="custom-cb"></div>
           <span class="cgv-text" id="cgv-text-span"></span>
-        </label>
+        </div>
         <div class="evin-short" id="evin-short-txt"></div>
         <button class="btn-jouer" id="btn-jouer"></button>
       </div>
@@ -556,15 +556,22 @@ document.getElementById('btn-back').addEventListener('click', function() {
 // ══════════════════════════════════════════════════════
 function setChecked(val) {
   cbChecked = val;
-  const cb     = document.getElementById('cgv-checkbox');
   const custom = document.getElementById('custom-cb');
   const btn    = document.getElementById('btn-jouer');
-  if (cb)     cb.checked = val;
   if (custom) val ? custom.classList.add('checked') : custom.classList.remove('checked');
   if (btn)    val ? btn.classList.add('active')     : btn.classList.remove('active');
 }
 
-document.getElementById('cgv-label').addEventListener('click', function() {
+// Clic sur la case à cocher custom
+document.getElementById('custom-cb').addEventListener('click', function(e) {
+  e.stopPropagation();
+  setChecked(!cbChecked);
+});
+
+// Clic sur le texte du consentement (sauf le lien)
+document.getElementById('cgv-text-span').addEventListener('click', function(e) {
+  if (e.target.tagName === 'SPAN' && e.target.style.textDecoration === 'underline') return;
+  e.stopPropagation();
   setChecked(!cbChecked);
 });
 
