@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HeadWaiter Challenge – CGV</title>
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C96B;
+    --dark: #0A1628;
+    --dark2: #0D1F3C;
+    --dark3: #112444;
+    --board-bg: #0B1E38;
+    --text: #F0E6D0;
+    --text-dim: #A89070;
+    --green: #4CAF50;
+    --red: #E53935;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Georgia', serif;
+    background: var(--dark);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ===== PAGE D'ACCUEIL ===== */
+  #page-accueil {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 24px 20px;
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(26,74,122,0.55) 0%, transparent 55%),
+      radial-gradient(ellipse at 70% 80%, rgba(10,28,60,0.7) 0%, transparent 55%),
+      linear-gradient(160deg, #0B1E38 0%, #071428 50%, #0A1628 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  #page-accueil::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 80%, rgba(201,168,76,0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(201,168,76,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .logo-icon {
+    font-size: 68px;
+    display: block;
+    text-align: center;
+    margin-bottom: 10px;
+    filter: drop-shadow(0 0 24px rgba(201,168,76,0.55));
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50%      { transform: translateY(-9px); }
+  }
+
+  .game-title {
+    font-size: clamp(30px, 6vw, 54px);
+    font-weight: bold;
+    color: var(--gold);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    text-shadow: 0 0 32px rgba(201,168,76,0.45), 0 2px 6px rgba(0,0,0,0.9);
+    line-height: 1.1;
+    text-align: center;
+  }
+
+  .game-subtitle {
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  .gold-divider {
+    width: 220px;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    margin: 22px auto;
+  }
+
+  /* Bloc CGV */
+  .cgv-block {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.28);
+    border-radius: 14px;
+    padding: 20px 24px 14px;
+    max-width: 500px;
+    width: 100%;
+    margin-bottom: 20px;
+    backdrop-filter: blur(6px);
+  }
+
+  .cgv-checkbox-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .cgv-checkbox-row input[type="checkbox"] { display: none; }
+
+  .custom-checkbox {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    border: 2px solid var(--gold);
+    border-radius: 6px;
+    background: rgba(201,168,76,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+    transition: all 0.25s;
+  }
+
+  .custom-checkbox.checked {
+    background: var(--gold);
+    box-shadow: 0 0 14px rgba(201,168,76,0.55);
+  }
+
+  .custom-checkbox.checked::after {
+    content: '✓';
+    color: var(--dark);
+    font-size: 15px;
+    font-weight: bold;
+  }
+
+  .cgv-text {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.65;
+  }
+
+  .cgv-link {
+    color: var(--gold);
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: bold;
+    background: none;
+    border: none;
+    font-size: 13px;
+    font-family: inherit;
+    padding: 0;
+    transition: color 0.2s, text-shadow 0.2s;
+  }
+
+  .cgv-link:hover {
+    color: var(--gold-light);
+    text-shadow: 0 0 8px rgba(201,168,76,0.5);
+  }
+
+  .evin-mention {
+    font-size: 10px;
+    color: rgba(201,168,76,0.45);
+    text-align: center;
+    margin-top: 10px;
+    letter-spacing: 0.4px;
+  }
+
+  /* Bouton JOUER */
+  .btn-jouer {
+    background: linear-gradient(135deg, var(--gold) 0%, #A8782A 100%);
+    color: var(--dark);
+    border: none;
+    border-radius: 50px;
+    padding: 17px 60px;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Georgia', serif;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 22px rgba(201,168,76,0.3);
+    opacity: 0.35;
+    pointer-events: none;
+  }
+
+  .btn-jouer.active {
+    opacity: 1;
+    pointer-events: all;
+    box-shadow: 0 6px 32px rgba(201,168,76,0.55);
+  }
+
+  .btn-jouer.active:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 42px rgba(201,168,76,0.7);
+  }
+
+  .btn-jouer.active:active { transform: translateY(0); }
+
+  /* ===== PAGE CGV ===== */
+  #page-cgv {
+    display: none;
+    min-height: 100vh;
+    background: linear-gradient(180deg, #0B1E38 0%, #071428 100%);
+  }
+
+  .cgv-header {
+    background: linear-gradient(135deg, #0D1F3C 0%, #112444 100%);
+    border-bottom: 2px solid var(--gold);
+    padding: 14px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .btn-back {
+    background: rgba(201,168,76,0.12);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+
+  .btn-back:hover { background: rgba(201,168,76,0.28); }
+
+  .cgv-header-title {
+    color: var(--gold);
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 0.8px;
+  }
+
+  .cgv-content {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 36px 24px 80px;
+  }
+
+  /* En-tête page CGV */
+  .cgv-page-title {
+    text-align: center;
+    margin-bottom: 36px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgba(201,168,76,0.25);
+  }
+
+  .cgv-page-title .hat { font-size: 48px; display: block; margin-bottom: 10px; }
+
+  .cgv-page-title h1 {
+    font-size: 24px;
+    color: var(--gold);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .cgv-page-title .meta {
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .cgv-page-title .editeur {
+    display: inline-block;
+    margin-top: 12px;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 20px;
+    padding: 5px 16px;
+    font-size: 12px;
+    color: var(--gold);
+  }
+
+  /* Articles */
+  .cgv-article {
+    margin-bottom: 34px;
+  }
+
+  .cgv-article h2 {
+    font-size: 15px;
+    color: var(--gold);
+    border-bottom: 1px solid rgba(201,168,76,0.28);
+    padding-bottom: 8px;
+    margin-bottom: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .cgv-article p {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.85;
+    margin-bottom: 10px;
+  }
+
+  .cgv-article ul {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+  }
+
+  .cgv-article ul li {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.7;
+    padding: 5px 0 5px 22px;
+    position: relative;
+  }
+
+  .cgv-article ul li::before {
+    content: '▸';
+    color: var(--gold);
+    position: absolute;
+    left: 0;
+  }
+
+  /* Boîtes info */
+  .info-box {
+    background: rgba(201,168,76,0.07);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 13px 18px;
+    margin: 14px 0;
+  }
+
+  .info-box .box-label {
+    font-size: 10px;
+    color: var(--gold);
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+  }
+
+  .info-box p { font-size: 12px; margin: 0; line-height: 1.65; }
+
+  .warning-box {
+    background: rgba(229,57,53,0.08);
+    border-left: 3px solid var(--red);
+    border-radius: 0 8px 8px 0;
+    padding: 13px 18px;
+    margin: 14px 0;
+  }
+
+  .warning-box .box-label {
+    font-size: 10px;
+    color: var(--red);
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+  }
+
+  .warning-box p { font-size: 12px; color: #E8A0A0; margin: 0; line-height: 1.65; }
+
+  /* Tableau public */
+  .public-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 14px 0;
+  }
+
+  @media (max-width: 520px) { .public-grid { grid-template-columns: 1fr; } }
+
+  .public-ok, .public-non {
+    border-radius: 10px;
+    padding: 14px;
+  }
+
+  .public-ok {
+    background: rgba(76,175,80,0.08);
+    border: 1px solid rgba(76,175,80,0.3);
+  }
+
+  .public-non {
+    background: rgba(229,57,53,0.08);
+    border: 1px solid rgba(229,57,53,0.3);
+  }
+
+  .public-ok h4 { color: var(--green); font-size: 12px; margin-bottom: 9px; letter-spacing: 0.5px; }
+  .public-non h4 { color: var(--red); font-size: 12px; margin-bottom: 9px; letter-spacing: 0.5px; }
+  .public-ok li, .public-non li { font-size: 11.5px !important; }
+
+  /* Tableau conformité Évin */
+  .evin-table { width: 100%; border-collapse: collapse; margin: 14px 0; }
+  .evin-table th {
+    background: rgba(201,168,76,0.15);
+    color: var(--gold);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 9px 12px;
+    text-align: left;
+    border-bottom: 1px solid rgba(201,168,76,0.3);
+  }
+  .evin-table td {
+    font-size: 12px;
+    color: var(--text-dim);
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    vertical-align: top;
+    line-height: 1.6;
+  }
+  .evin-table tr:last-child td { border-bottom: none; }
+  .evin-table td:first-child { color: var(--gold); font-weight: bold; white-space: nowrap; }
+
+  /* Bannière Évin */
+  .evin-banner {
+    background: rgba(229,57,53,0.09);
+    border: 1px solid rgba(229,57,53,0.4);
+    border-radius: 12px;
+    padding: 18px 20px;
+    text-align: center;
+    margin: 28px 0;
+  }
+
+  .evin-banner .evin-main {
+    font-size: 13px;
+    color: #EE9090;
+    font-weight: bold;
+    letter-spacing: 1px;
+    line-height: 1.5;
+  }
+
+  .evin-banner .evin-tel {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 8px;
+    display: block;
+  }
+
+  /* Footer CGV */
+  .cgv-footer {
+    text-align: center;
+    border-top: 1px solid rgba(201,168,76,0.2);
+    padding-top: 24px;
+    margin-top: 40px;
+  }
+
+  .cgv-footer p {
+    font-size: 11px;
+    color: var(--text-dim);
+    line-height: 1.7;
+    margin-bottom: 4px;
+  }
+
+  .cgv-footer .version {
+    display: inline-block;
+    margin-top: 10px;
+    background: rgba(201,168,76,0.08);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 1px;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(90px);
+    background: var(--green);
+    color: #fff;
+    padding: 13px 28px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: bold;
+    font-family: 'Georgia', serif;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 9999;
+    white-space: nowrap;
+    box-shadow: 0 6px 24px rgba(76,175,80,0.4);
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- ================================================ -->
+<!--               PAGE D'ACCUEIL                     -->
+<!-- ================================================ -->
+<div id="page-accueil">
+
+  <span class="logo-icon">🎩</span>
+  <div class="game-title">HeadWaiter<br>Challenge</div>
+  <div class="game-subtitle">Jeu de plateau pédagogique · Formation HCR</div>
+
+  <div class="gold-divider"></div>
+
+  <!-- BLOC CONSENTEMENT CGV -->
+  <div class="cgv-block">
+    <label class="cgv-checkbox-row" id="cgv-label">
+      <input type="checkbox" id="cgv-checkbox">
+      <div class="custom-checkbox" id="custom-cb"></div>
+      <span class="cgv-text">
+        J'ai lu et j'accepte les
+        <button class="cgv-link" id="btn-open-cgv">Conditions Générales d'Utilisation</button>
+        de HeadWaiter Challenge, notamment les dispositions relatives aux contenus pédagogiques portant sur les boissons et produits du service en restauration.
+      </span>
+    </label>
+    <div class="evin-mention">⚠️ L'abus d'alcool est dangereux pour la santé — Application à vocation pédagogique exclusivement</div>
+  </div>
+
+  <button class="btn-jouer" id="btn-jouer">▶ &nbsp;Jouer</button>
+
+</div><!-- fin #page-accueil -->
+
+
+<!-- ================================================ -->
+<!--                  PAGE CGV                        -->
+<!-- ================================================ -->
+<div id="page-cgv">
+
+  <div class="cgv-header">
+    <button class="btn-back" id="btn-back">← Retour</button>
+    <div class="cgv-header-title">Conditions Générales d'Utilisation — HeadWaiter Challenge™</div>
+  </div>
+
+  <div class="cgv-content">
+
+    <!-- Titre principal -->
+    <div class="cgv-page-title">
+      <span class="hat">🎩</span>
+      <h1>HeadWaiter Challenge™</h1>
+      <div class="meta">Conditions Générales d'Utilisation · Version 1.0 · 2025</div>
+      <div class="editeur">Éditeur : Phil-Good Formation — Perpignan, Occitanie, France</div>
+    </div>
+
+    <!-- Art. 1 -->
+    <div class="cgv-article">
+      <h2>Article 1 — Nature et finalité de l'application</h2>
+      <p>HeadWaiter Challenge est une application ludo-pédagogique conçue exclusivement à des fins de formation professionnelle dans le secteur de l'hôtellerie-restauration (HCR).</p>
+      <div class="info-box">
+        <div class="box-label">🎯 Objectif pédagogique</div>
+        <p>Cette application vise à consolider les connaissances professionnelles des apprenants préparant le Titre Professionnel Serveur en Restauration (Niveau 3 RNCP), en conformité avec le référentiel REAC. Elle couvre les domaines des vins, boissons, fromages, cocktails et techniques de service.</p>
+      </div>
+      <p>L'application repose sur un mécanisme de jeu de plateau numérique reproduisant des situations professionnelles, incluant des questions sur les vins, spiritueux, cocktails, fromages et techniques de service, dans une visée strictement formative.</p>
+      <div class="warning-box">
+        <div class="box-label">⚠️ Déclaration expresse de non-incitation</div>
+        <p>HeadWaiter Challenge n'est pas une application de promotion commerciale de l'alcool. Elle ne contient aucun message publicitaire, aucune marque commerciale mise en avant à titre promotionnel, et n'encourage en aucune manière la consommation de boissons alcoolisées. Les contenus relatifs à l'alcool sont présentés sous l'angle de la connaissance professionnelle, à l'instar d'un manuel de formation en restauration.</p>
+      </div>
+    </div>
+
+    <!-- Art. 2 -->
+    <div class="cgv-article">
+      <h2>Article 2 — Public cible et conditions d'accès</h2>
+      <p>HeadWaiter Challenge est destiné exclusivement aux professionnels et aux personnes en formation dans le secteur HCR.</p>
+      <div class="public-grid">
+        <div class="public-ok">
+          <h4>✅ Public autorisé</h4>
+          <ul>
+            <li>Apprentis en formation HCR (mineurs inclus, dans le cadre de leur cursus)</li>
+            <li>Professionnels du secteur CHR</li>
+            <li>Formateurs et enseignants en restauration</li>
+            <li>Tuteurs en entreprise du secteur</li>
+          </ul>
+        </div>
+        <div class="public-non">
+          <h4>❌ Public exclu</h4>
+          <ul>
+            <li>Mineurs sans lien avec la formation HCR</li>
+            <li>Personnes en situation de dépendance à l'alcool</li>
+            <li>Toute personne n'ayant pas de lien avec le secteur HCR</li>
+          </ul>
+        </div>
+      </div>
+      <p><strong>En cochant la case de consentement, l'utilisateur certifie être inscrit(e) dans le secteur de la restauration (formation ou exercice professionnel). Les apprenants mineurs sont autorisés uniquement dans le cadre de leur cursus HCR, sous la responsabilité de leur établissement de formation.</strong></p>
+    </div>
+
+    <!-- Art. 3 -->
+    <div class="cgv-article">
+      <h2>Article 3 — Consentement éclairé aux contenus</h2>
+      <p>Dans le cadre de sa vocation formative, l'application contient des informations techniques sur des boissons alcoolisées (vins, bières, spiritueux, cocktails). Ces informations sont présentées :</p>
+      <ul>
+        <li>Dans un cadre strictement éducatif et professionnel ;</li>
+        <li>Sans aucun message d'incitation à la consommation ;</li>
+        <li>Conformément aux référentiels officiels (REAC, CCP) du ministère du Travail ;</li>
+        <li>Sans mise en avant commerciale de marques ou de produits.</li>
+      </ul>
+      <div class="info-box">
+        <div class="box-label">📚 Base légale des contenus</div>
+        <p>Les contenus pédagogiques sont alignés sur le REAC du Titre Professionnel Serveur en Restauration, publié par le ministère chargé de la Formation professionnelle. Toute référence à des produits alcoolisés s'inscrit dans ce cadre réglementaire officiel. L'enseignement des accords mets-vins, des techniques de service et de la connaissance des spiritueux est intégré aux programmes officiels de l'Éducation nationale et du ministère du Travail.</p>
+      </div>
+    </div>
+
+    <!-- Art. 4 -->
+    <div class="cgv-article">
+      <h2>Article 4 — Conformité à la loi Évin (Loi n° 91-32 du 10 janvier 1991)</h2>
+      <p>L'éditeur s'engage expressément à respecter les dispositions de la loi Évin relative à la lutte contre le tabagisme et l'alcoolisme.</p>
+      <table class="evin-table">
+        <tr>
+          <th>Engagement</th>
+          <th>Détail</th>
+        </tr>
+        <tr>
+          <td>Aucune publicité</td>
+          <td>L'application ne contient aucune publicité pour des boissons alcoolisées au sens de l'article L3323-2 du Code de la santé publique.</td>
+        </tr>
+        <tr>
+          <td>Message sanitaire</td>
+          <td>L'application affiche le message légal : « L'abus d'alcool est dangereux pour la santé. À consommer avec modération. »</td>
+        </tr>
+        <tr>
+          <td>Finalité exclusive</td>
+          <td>Tout contenu relatif à l'alcool vise uniquement la formation professionnelle certifiée, conformément à l'article L6313-1 du Code du travail.</td>
+        </tr>
+        <tr>
+          <td>Accès encadré</td>
+          <td>L'accès est limité aux personnes ayant un lien avéré avec le secteur HCR. Les mineurs ne sont autorisés que dans le cadre de leur formation professionnelle.</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Art. 5 -->
+    <div class="cgv-article">
+      <h2>Article 5 — Protection des données personnelles (RGPD)</h2>
+      <p>Conformément au Règlement Général sur la Protection des Données (RGPD — Règlement UE 2016/679) et à la loi Informatique et Libertés, l'éditeur s'engage à :</p>
+      <ul>
+        <li>Ne collecter que les données strictement nécessaires au fonctionnement pédagogique de l'application ;</li>
+        <li>Ne pas transmettre ni vendre les données à des tiers commerciaux, notamment des acteurs de l'industrie des boissons ;</li>
+        <li>Conserver les scores et progressions uniquement en local (localStorage) sur l'appareil de l'utilisateur ;</li>
+        <li>Permettre à tout utilisateur d'exercer ses droits d'accès, de rectification et de suppression.</li>
+      </ul>
+    </div>
+
+    <!-- Art. 6 -->
+    <div class="cgv-article">
+      <h2>Article 6 — Propriété intellectuelle</h2>
+      <p>L'ensemble des contenus pédagogiques de HeadWaiter Challenge (questions, scénarios, illustrations, mécaniques de jeu, textes explicatifs) sont la propriété exclusive de Phil-Good Formation et protégés par le droit d'auteur (Code de la Propriété Intellectuelle, L111-1 et suivants).</p>
+      <p>Toute reproduction, adaptation, diffusion ou exploitation commerciale sans autorisation expresse et préalable de l'éditeur est strictement interdite.</p>
+    </div>
+
+    <!-- Art. 7 -->
+    <div class="cgv-article">
+      <h2>Article 7 — Limitation de responsabilité</h2>
+      <p>L'éditeur décline toute responsabilité en cas de :</p>
+      <ul>
+        <li>Utilisation par un mineur sans lien avec une formation HCR ;</li>
+        <li>Utilisation en dehors du cadre pédagogique pour lequel l'application a été conçue ;</li>
+        <li>Mauvaise interprétation de contenus pédagogiques hors de leur contexte professionnel ;</li>
+        <li>Défaillance technique de l'App Store Apple ou des serveurs associés.</li>
+      </ul>
+    </div>
+
+    <!-- Art. 8 -->
+    <div class="cgv-article">
+      <h2>Article 8 — Droit applicable et juridiction compétente</h2>
+      <p>Le présent document est régi par le droit français. Tout litige relatif à l'utilisation de l'application HeadWaiter Challenge sera soumis à la compétence exclusive des tribunaux de Perpignan (Pyrénées-Orientales, Occitanie, France), sauf disposition légale contraire applicable à l'utilisateur en tant que consommateur.</p>
+    </div>
+
+    <!-- Bannière Évin -->
+    <div class="evin-banner">
+      <div class="evin-main">⚠️ L'ABUS D'ALCOOL EST DANGEREUX POUR LA SANTÉ.<br>À CONSOMMER AVEC MODÉRATION.</div>
+      <span class="evin-tel">Alcool Info Service : 0 980 980 930 (appel non surtaxé) — 7j/7, 8h–2h</span>
+    </div>
+
+    <!-- Footer -->
+    <div class="cgv-footer">
+      <p>© HeadWaiter Challenge™ — Phil-Good Formation — Tous droits réservés.</p>
+      <p>Application à vocation exclusivement pédagogique — Secteur Hôtellerie-Cafés-Restauration</p>
+      <span class="version">CGU Version 1.0 · 2025</span>
+    </div>
+
+  </div><!-- fin .cgv-content -->
+</div><!-- fin #page-cgv -->
+
+<!-- Toast -->
+<div class="toast" id="toast">✓ CGU acceptées — Bon jeu !</div>
+
+<!-- ================================================ -->
+<!--                  JAVASCRIPT                      -->
+<!-- ================================================ -->
+<script>
+  const cbCheckbox  = document.getElementById('cgv-checkbox');
+  const customCb    = document.getElementById('custom-cb');
+  const btnJouer    = document.getElementById('btn-jouer');
+  const btnOpenCGV  = document.getElementById('btn-open-cgv');
+  const btnBack     = document.getElementById('btn-back');
+  const cgvLabel    = document.getElementById('cgv-label');
+  const pageAccueil = document.getElementById('page-accueil');
+  const pageCGV     = document.getElementById('page-cgv');
+  const toast       = document.getElementById('toast');
+
+  // ---- Mémorisation consentement via localStorage ----
+  const CGV_KEY = 'hwc_cgv_accepted_v1';
+
+  function isAccepted() {
+    try { return localStorage.getItem(CGV_KEY) === '1'; } catch(e) { return false; }
+  }
+
+  function saveAccepted() {
+    try { localStorage.setItem(CGV_KEY, '1'); } catch(e) {}
+  }
+
+  // Init : si déjà accepté, on coche directement
+  if (isAccepted()) {
+    setChecked(true);
+  }
+
+  // ---- Toggle checkbox ----
+  cgvLabel.addEventListener('click', function(e) {
+    // Si le clic vient du lien CGV, on ne coche pas
+    if (e.target === btnOpenCGV) return;
+    const newVal = !cbCheckbox.checked;
+    cbCheckbox.checked = newVal;
+    setChecked(newVal);
+  });
+
+  function setChecked(val) {
+    cbCheckbox.checked = val;
+    if (val) {
+      customCb.classList.add('checked');
+      btnJouer.classList.add('active');
+    } else {
+      customCb.classList.remove('checked');
+      btnJouer.classList.remove('active');
+    }
+  }
+
+  // ---- Lien "ouvrir CGV" ----
+  btnOpenCGV.addEventListener('click', function(e) {
+    e.stopPropagation();
+    showCGV();
+  });
+
+  function showCGV() {
+    pageAccueil.style.display = 'none';
+    pageCGV.style.display = 'block';
+    pageCGV.scrollTop = 0;
+    window.scrollTo(0, 0);
+  }
+
+  // ---- Bouton Retour ----
+  btnBack.addEventListener('click', function() {
+    pageCGV.style.display = 'none';
+    pageAccueil.style.display = 'flex';
+  });
+
+  // ---- Bouton JOUER ----
+  btnJouer.addEventListener('click', function() {
+    if (!cbCheckbox.checked) return;
+    saveAccepted();
+    // Afficher toast
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2800);
+    // Ici : appel au jeu principal
+    // Ex : lancerJeu(); ou window.location.href = 'game.html';
+    setTimeout(() => {
+      alert('▶ Lancement du jeu HeadWaiter Challenge...\n\n(Connecter ici à votre index.html principal)');
+    }, 400);
+  });
+</script>
+</body>
+</html>
