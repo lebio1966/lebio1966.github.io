@@ -431,8 +431,8 @@
   }
   .modal-question {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(11px, 2vh, 17px); line-height: 1.4;
-    margin-bottom: clamp(4px, 0.9vh, 10px); color: var(--cream);
+    font-size: clamp(14px, 2.8vh, 22px); line-height: 1.45;
+    margin-bottom: clamp(6px, 1.1vh, 12px); color: var(--cream);
     font-weight: 400; flex-shrink: 0;
   }
   .propositions-list {
@@ -810,60 +810,68 @@
 <!-- ══════════ SCREEN 2: LOBBY (CREATE) ══════════ -->
 <div class="screen hidden" id="lobby-screen">
   <div class="panel-169">
-    <div class="panel-169-inner">
-    <div class="logo-wrap" style="margin-bottom:8px;">
-      <div class="logo-icon" style="width:50px;height:50px;font-size:26px;flex-shrink:0;">🎮</div>
-      <div id="t-lobby-title" class="logo-title" style="font-size:clamp(16px,2.8vh,22px);margin:0;">Créer une Partie</div>
-    </div>
+    <div class="panel-169-inner" style="justify-content:flex-start;padding-top:clamp(10px,2vh,20px);">
 
-    <div class="card" style="margin-bottom:0;">
-    <div class="tabs">
-      <button id="t-tab-solo" class="tab active" onclick="switchLobbyTab('solo')">Solo / Local</button>
-      <button id="t-tab-online" class="tab" onclick="switchLobbyTab('online')">En Ligne</button>
-    </div>
+      <!-- Titre -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:clamp(8px,1.5vh,16px);width:100%;">
+        <div class="logo-icon" style="width:clamp(36px,5.5vh,48px);height:clamp(36px,5.5vh,48px);font-size:clamp(18px,3vh,26px);flex-shrink:0;">🎮</div>
+        <div id="t-lobby-title" class="logo-title" style="font-size:clamp(16px,3vh,24px);margin:0;letter-spacing:1px;">Créer une Partie</div>
+      </div>
 
-    <div id="tab-solo">
-      <div id="players-setup" style="margin-bottom:16px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-          <div id="t-players-label" class="card-title" style="margin-bottom:0;font-size:16px;">Joueurs</div>
-          <button class="btn btn-primary btn-sm" onclick="addPlayer()" id="add-player-btn">+ Ajouter</button>
+      <!-- Layout 2 colonnes -->
+      <div style="display:flex;gap:clamp(10px,2vw,20px);width:100%;flex:1;min-height:0;align-items:stretch;">
+
+        <!-- Colonne gauche : Solo -->
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:clamp(6px,1.2vh,12px);">
+          <div style="font-size:clamp(11px,1.8vh,14px);font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:1px;">🎲 Solo / Local</div>
+          <div id="players-setup" style="flex:1;min-height:0;overflow:hidden;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:clamp(4px,0.8vh,10px);">
+              <div id="t-players-label" style="font-size:clamp(11px,1.8vh,14px);font-weight:700;color:var(--cream);">Joueurs</div>
+              <button class="btn btn-primary btn-sm" onclick="addPlayer()" id="add-player-btn" style="padding:4px 12px;font-size:12px;">+ Ajouter</button>
+            </div>
+            <div id="player-list" style="overflow-y:auto;max-height:clamp(60px,12vh,120px);"></div>
+          </div>
+          <div>
+            <label id="t-turns-label" style="font-size:clamp(10px,1.6vh,13px);color:var(--beige);display:block;margin-bottom:4px;">Nombre de tours</label>
+            <select id="max-turns-select" style="width:100%;background:rgba(22,20,48,0.9);border:1px solid rgba(201,169,110,0.25);border-radius:8px;padding:clamp(5px,1vh,9px) 10px;color:var(--cream);font-size:clamp(11px,1.7vh,14px);font-family:'Source Sans 3',sans-serif;">
+              <option id="t-opt15" value="15">15 tours (~20 min)</option>
+              <option id="t-opt25" value="25" selected>25 tours (~35 min)</option>
+              <option id="t-opt40" value="40">40 tours (~60 min)</option>
+              <option id="t-optinf" value="0">Illimité</option>
+            </select>
+          </div>
+          <button id="t-start-btn" class="btn btn-gold" onclick="startGame()" style="font-size:clamp(13px,2vh,16px);padding:clamp(8px,1.5vh,14px);">🎲 Lancer la Partie</button>
         </div>
-        <div id="player-list"></div>
-      </div>
-      <div class="input-group">
-        <label id="t-turns-label">Nombre de tours</label>
-        <select id="max-turns-select">
-          <option id="t-opt15" value="15">15 tours (rapide ~20 min)</option>
-          <option id="t-opt25" value="25" selected>25 tours (normal ~35 min)</option>
-          <option id="t-opt40" value="40">40 tours (long ~60 min)</option>
-          <option id="t-optinf" value="0">Illimité (jusqu'à abandon)</option>
-        </select>
-      </div>
-      <button id="t-start-btn" class="btn btn-gold" onclick="startGame()">🎲 Lancer la Partie</button>
-    </div>
 
-    <div id="tab-online" class="hidden">
-      <div class="code-display">
-        <div id="t-room-label" class="code-label">Code de la partie</div>
-        <div class="code-value" id="room-code-display">----</div>
-      </div>
-      <div class="input-group">
-        <label>Votre nom</label>
-        <input type="text" id="host-name" placeholder="Ex: Philippe" maxlength="16">
-      </div>
-      <button id="t-create-room" class="btn btn-gold" onclick="createOnlineRoom()">Créer la salle 🎩</button>
-      <div class="sep"></div>
-      <div id="online-waiting" class="hidden">
-        <div id="t-online-label" class="card-title" style="font-size:14px;color:var(--beige);">Joueurs connectés</div>
-        <div id="online-players-list" class="waiting-players"></div>
-        <button class="btn btn-primary" onclick="startOnlineGame()" id="start-online-btn">Démarrer (min. 2)</button>
-      </div>
-    </div>
-  </div>
+        <!-- Séparateur vertical -->
+        <div style="width:1px;background:rgba(255,255,255,0.1);flex-shrink:0;"></div>
 
-    <div style="margin-top:clamp(6px,1vh,12px);">
-      <button class="btn btn-outline" style="max-width:200px;" onclick="showScreen('home-screen')">← Retour</button>
-    </div>
+        <!-- Colonne droite : En ligne -->
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:clamp(6px,1.2vh,12px);">
+          <div style="font-size:clamp(11px,1.8vh,14px);font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:1px;">📲 En Ligne</div>
+          <div class="code-display" style="padding:clamp(8px,1.5vh,14px);margin-bottom:0;">
+            <div id="t-room-label" class="code-label" style="font-size:clamp(9px,1.4vh,11px);">Code de la partie</div>
+            <div class="code-value" id="room-code-display" style="font-size:clamp(20px,4vh,32px);">----</div>
+          </div>
+          <div>
+            <label style="font-size:clamp(10px,1.6vh,13px);color:var(--beige);display:block;margin-bottom:4px;">Votre nom</label>
+            <input type="text" id="host-name" placeholder="Ex: Philippe" maxlength="16" style="width:100%;background:rgba(22,20,48,0.9);border:1px solid rgba(201,169,110,0.25);border-radius:8px;padding:clamp(5px,1vh,9px) 10px;color:var(--cream);font-size:clamp(12px,1.8vh,15px);font-family:'Source Sans 3',sans-serif;outline:none;">
+          </div>
+          <button id="t-create-room" class="btn btn-gold" onclick="createOnlineRoom()" style="font-size:clamp(12px,1.8vh,15px);padding:clamp(7px,1.3vh,12px);">Créer la salle 🎩</button>
+          <div id="online-waiting" class="hidden">
+            <div id="t-online-label" style="font-size:clamp(11px,1.6vh,13px);color:var(--beige);margin-bottom:6px;font-weight:700;">Joueurs connectés</div>
+            <div id="online-players-list" class="waiting-players"></div>
+            <button class="btn btn-primary" onclick="startOnlineGame()" id="start-online-btn" style="font-size:clamp(12px,1.8vh,15px);">Démarrer (min. 2)</button>
+          </div>
+        </div>
+
+      </div><!-- fin 2 colonnes -->
+
+      <!-- Retour -->
+      <div style="margin-top:clamp(6px,1vh,12px);width:100%;display:flex;justify-content:center;">
+        <button class="btn btn-outline" style="max-width:180px;font-size:clamp(12px,1.8vh,14px);padding:clamp(6px,1vh,10px) 20px;" onclick="showScreen('home-screen')">← Retour</button>
+      </div>
+
     </div><!-- panel-169-inner -->
   </div><!-- panel-169 -->
 </div>
@@ -1283,15 +1291,7 @@ function showScreen(id) {
 // ═══════════════════════════════════════════════════════
 //  LOBBY
 // ═══════════════════════════════════════════════════════
-function switchLobbyTab(tab) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  event.target.classList.add('active');
-  document.getElementById('tab-solo').classList.toggle('hidden', tab !== 'solo');
-  document.getElementById('tab-online').classList.toggle('hidden', tab !== 'online');
-  if (tab === 'online') {
-    generateRoomCode();
-  }
-}
+function switchLobbyTab(tab) { /* layout 2 colonnes */ }
 
 function renderLobbyPlayers() {
   const list = document.getElementById('player-list');
