@@ -132,11 +132,11 @@
 
   /* ─── LOGO / HERO ─── */
   .logo-wrap {
-    display: flex; flex-direction: column; align-items: center; gap: 8px;
-    margin-bottom: 32px;
+    display: flex; flex-direction: column; align-items: center; gap: clamp(4px,0.8vh,8px);
+    margin-bottom: clamp(10px,2vh,24px);
   }
   .logo-icon {
-    width: 90px; height: 90px;
+    width: clamp(56px,9vh,90px); height: clamp(56px,9vh,90px);
     background: radial-gradient(circle at 40% 35%, var(--gold-light), var(--bordeaux));
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
@@ -181,8 +181,8 @@
   .card {
     background: rgba(25,22,55,0.9);
     border: 1.5px solid rgba(59,130,246,0.2);
-    border-radius: 20px;
-    padding: 24px;
+    border-radius: clamp(12px,2vh,20px);
+    padding: clamp(12px,2.2vh,24px) clamp(14px,2.5vw,24px);
     width: 100%; max-width: 420px;
     box-shadow: 0 8px 32px rgba(0,0,0,0.5);
     backdrop-filter: blur(10px);
@@ -384,53 +384,68 @@
     80% { transform: rotate(5deg) scale(1); }
   }
 
-  /* ─── QUESTION MODAL ─── */
+  /* ─── QUESTION MODAL 16:9 sans scroll ─── */
   .modal-overlay {
     position: fixed; inset: 0; z-index: 100;
-    background: rgba(0,0,0,0.85);
+    background: rgba(0,0,0,0.88);
     display: flex; align-items: center; justify-content: center;
-    padding: 16px;
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(6px);
     opacity: 0; pointer-events: none;
     transition: opacity .3s;
   }
   .modal-overlay.active { opacity: 1; pointer-events: all; }
 
+  /* ── MODALE 16:9 STRICTE — zéro scroll ── */
   .modal {
     background: #1a1740;
-    border: 1.5px solid rgba(59,130,246,0.35);
-    border-radius: 20px;
-    padding: 24px;
-    width: 100%; max-width: 680px;
-    max-height: 85vh; overflow-y: auto;
-    box-shadow: var(--shadow-lg);
+    border: 1px solid rgba(59,130,246,0.25);
+    border-radius: clamp(10px, 2vw, 18px);
+    /* Force le ratio 16:9 : la largeur dicte la hauteur */
+    width:  min(96vw, 170.67vh);
+    height: min(54vw,  96vh);
+    max-width: 960px;
+    max-height: calc(960px * 9 / 16);
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.75);
     transform: scale(0.95); transition: transform .3s;
+    padding: 0; position: relative;
   }
   .modal-overlay.active .modal { transform: scale(1); }
 
+  /* Intérieur : jamais de scroll */
+  #modal-content {
+    flex: 1; overflow: hidden;
+    display: flex; flex-direction: column;
+    padding: clamp(8px,1.8vh,18px) clamp(10px,2.2vw,24px);
+    gap: 0; min-height: 0;
+  }
+
   .modal-cat {
     display: inline-flex; align-items: center; gap: 6px;
-    padding: 4px 12px; border-radius: 20px;
-    font-size: 12px; font-weight: 700;
+    padding: 2px 10px; border-radius: 20px;
+    font-size: clamp(8px, 1.3vh, 11px); font-weight: 700;
     text-transform: uppercase; letter-spacing: 1px;
-    margin-bottom: 16px;
+    margin-bottom: clamp(3px, 0.7vh, 8px);
+    flex-shrink: 0;
   }
   .modal-question {
     font-family: 'Playfair Display', serif;
-    font-size: 17px; line-height: 1.55;
-    margin-bottom: 20px; color: var(--cream);
-    font-weight: 400;
+    font-size: clamp(11px, 2vh, 17px); line-height: 1.4;
+    margin-bottom: clamp(4px, 0.9vh, 10px); color: var(--cream);
+    font-weight: 400; flex-shrink: 0;
   }
   .propositions-list {
-    display: flex; flex-direction: column; gap: 8px;
-    margin-bottom: 20px;
+    display: flex; flex-direction: column; gap: clamp(3px, 0.6vh, 6px);
+    margin-bottom: clamp(3px, 0.6vh, 8px);
+    flex: 1; overflow: hidden; min-height: 0;
   }
   .proposition-item {
     background: rgba(255,255,255,0.05);
-    border: 2px solid rgba(201,169,110,0.2);
-    border-radius: 10px;
-    padding: 12px 16px;
-    font-size: 14px; line-height: 1.4;
+    border: 1px solid rgba(201,169,110,0.2);
+    border-radius: 7px;
+    padding: clamp(4px, 0.9vh, 9px) clamp(7px, 1.3vh, 14px);
+    font-size: clamp(10px, 1.65vh, 13px); line-height: 1.3;
     color: var(--cream-dark);
     font-family: 'Source Sans 3', sans-serif;
     cursor: pointer;
@@ -438,6 +453,7 @@
     user-select: none;
     position: relative;
     -webkit-tap-highlight-color: transparent;
+    flex-shrink: 1;
   }
   @media (hover: hover) {
     .proposition-item:not(.selected):hover {
@@ -486,42 +502,43 @@
 
   .answer-area {
     background: rgba(0,0,0,0.4);
-    border-radius: 12px; padding: 16px;
-    margin-bottom: 16px;
+    border-radius: 10px; padding: clamp(6px,1.2vh,12px);
+    margin-bottom: clamp(4px,0.8vh,10px);
     border: 1px solid rgba(201,169,110,0.2);
   }
-  .answer-label { font-size: 11px; color: var(--beige); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-weight: 700; }
+  .answer-label { font-size: clamp(8px,1.2vh,11px); color: var(--beige); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; font-weight: 700; }
   .answer-text {
     font-family: 'Playfair Display', serif;
-    font-size: 15px; color: var(--gold-light);
-    line-height: 1.5; font-style: italic;
+    font-size: clamp(10px,1.7vh,14px); color: var(--gold-light);
+    line-height: 1.4; font-style: italic;
   }
 
   .result-banner {
-    padding: 12px; border-radius: 12px;
-    text-align: center; font-size: 16px; font-weight: 700;
+    padding: clamp(6px,1vh,10px); border-radius: 10px;
+    text-align: center; font-size: clamp(11px,1.7vh,14px); font-weight: 700;
     display: none;
   }
-  .result-banner.correct { background: rgba(20,80,20,0.7); color: #a8f090; border: 2px solid #5dc040; display: block; border-radius: 12px; }
-  .result-banner.wrong { background: rgba(100,15,15,0.7); color: #ffb0b0; border: 2px solid #d04040; display: block; border-radius: 12px; }
+  .result-banner.correct { background: rgba(20,80,20,0.7); color: #a8f090; border: 2px solid #5dc040; display: block; border-radius: 10px; }
+  .result-banner.wrong { background: rgba(100,15,15,0.7); color: #ffb0b0; border: 2px solid #d04040; display: block; border-radius: 10px; }
   .result-banner.special { background: rgba(201,169,110,0.2); color: var(--gold-light); border: 1px solid var(--gold); display: block; }
 
   /* ─── CHANCE / COMMUNAUTE CARD ─── */
   .event-card {
-    text-align: center; padding: 24px 16px;
+    text-align: center; padding: clamp(10px,2vh,20px) 16px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; flex:1;
   }
   .event-card .event-type {
     font-family: 'Cinzel Decorative', serif;
-    font-size: 18px; color: var(--gold);
-    margin-bottom: 12px;
+    font-size: clamp(13px,2.2vh,18px); color: var(--gold);
+    margin-bottom: clamp(6px,1vh,12px);
   }
   .event-card .event-effet {
     font-family: 'Playfair Display', serif;
-    font-size: 16px; line-height: 1.6;
+    font-size: clamp(12px,2vh,16px); line-height: 1.5;
     color: var(--cream); font-style: italic;
-    margin-bottom: 20px;
+    margin-bottom: clamp(10px,1.5vh,20px);
   }
-  .event-icon { font-size: 56px; margin-bottom: 16px; }
+  .event-icon { font-size: clamp(36px,7vh,56px); margin-bottom: clamp(8px,1.2vh,16px); }
 
   /* ─── SCOREBOARD ─── */
   .score-badge {
@@ -619,17 +636,45 @@
   .pion.active-pion { animation: pionBounce 0.9s ease-in-out infinite; }
 
   /* ─── WIN SCREEN ─── */
+  /* ── Panneau 16:9 pour lobby / win / home ── */
+  .panel-169 {
+    background: rgba(16,12,40,0.96);
+    border: 1px solid rgba(59,130,246,0.2);
+    border-radius: clamp(12px,2vw,20px);
+    width:  min(96vw, 170.67vh);
+    height: min(54vw,  96vh);
+    max-width: 960px;
+    max-height: calc(960px * 9 / 16);
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 0;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+    padding: clamp(14px,3vh,32px) clamp(16px,4vw,48px);
+  }
+
+  /* ── Scrollable intérieur si le contenu dépasse (securité) ── */
+  .panel-169-inner {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: clamp(8px,1.5vh,18px);
+  }
+
   .win-screen-content {
-    text-align: center; max-width: 360px;
+    text-align: center; width: 100%; max-width: 480px;
+    display: flex; flex-direction: column; align-items: center;
+    gap: clamp(4px,0.8vh,10px);
   }
   .win-title {
     font-family: 'Fredoka One', cursive;
-    font-size: 36px;
+    font-size: clamp(22px,4.5vh,38px);
     color: #EF9F27;
-    margin-bottom: 8px;
+    margin: 0;
   }
-  .win-confetti { font-size: 64px; margin-bottom: 16px; animation: bounce 1s infinite; }
-  @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+  .win-confetti { font-size: clamp(40px,8vh,64px); margin: 0; animation: bounce 1s infinite; }
+  @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
   /* ─── CATEGORY COLORS ─── */
   .cat-vins { background: rgba(107,15,26,0.8); color: #f0a0a0; }
@@ -764,12 +809,14 @@
 
 <!-- ══════════ SCREEN 2: LOBBY (CREATE) ══════════ -->
 <div class="screen hidden" id="lobby-screen">
-  <div class="logo-wrap" style="margin-bottom:16px;">
-    <div class="logo-icon" style="width:60px;height:60px;font-size:30px;">🎮</div>
-    <div id="t-lobby-title" class="logo-title" style="font-size:22px;">Créer une Partie</div>
-  </div>
+  <div class="panel-169">
+    <div class="panel-169-inner">
+    <div class="logo-wrap" style="margin-bottom:8px;">
+      <div class="logo-icon" style="width:50px;height:50px;font-size:26px;flex-shrink:0;">🎮</div>
+      <div id="t-lobby-title" class="logo-title" style="font-size:clamp(16px,2.8vh,22px);margin:0;">Créer une Partie</div>
+    </div>
 
-  <div class="card">
+    <div class="card" style="margin-bottom:0;">
     <div class="tabs">
       <button id="t-tab-solo" class="tab active" onclick="switchLobbyTab('solo')">Solo / Local</button>
       <button id="t-tab-online" class="tab" onclick="switchLobbyTab('online')">En Ligne</button>
@@ -814,8 +861,11 @@
     </div>
   </div>
 
-  <div class="sep"></div>
-  <button class="btn btn-outline" style="max-width:200px;" onclick="showScreen('home-screen')">← Retour</button>
+    <div style="margin-top:clamp(6px,1vh,12px);">
+      <button class="btn btn-outline" style="max-width:200px;" onclick="showScreen('home-screen')">← Retour</button>
+    </div>
+    </div><!-- panel-169-inner -->
+  </div><!-- panel-169 -->
 </div>
 
 <!-- ══════════ SCREEN 3: JOIN ══════════ -->
@@ -912,18 +962,23 @@
 
 <!-- ══════════ SCREEN 6: WIN ══════════ -->
 <div class="screen hidden" id="win-screen">
-  <div class="win-screen-content">
-    <div class="win-confetti" id="win-emoji">🏆</div>
-    <div id="t-congrats" class="win-title">Félicitations !</div>
-    <div id="win-player-name" style="font-family:'Playfair Display',serif;font-size:28px;color:var(--gold-light);margin-bottom:4px;">—</div>
-    <div id="win-level" style="font-size:16px;color:var(--beige);margin-bottom:24px;font-style:italic;">—</div>
-    <div class="card" style="margin-bottom:24px;">
-      <div id="win-scores"></div>
-    </div>
-    <button id="t-btn-home" class="btn btn-gold" onclick="window.location.href='index.html'" style="max-width:280px;">🏠 Portail</button>
-    <div class="sep"></div>
-    <button id="t-btn-replay" class="btn btn-primary" onclick="restartGame()" style="max-width:280px;">🔄 Rejouer</button>
-  </div>
+  <div class="panel-169">
+    <div class="panel-169-inner">
+      <div class="win-screen-content">
+        <div class="win-confetti" id="win-emoji">🏆</div>
+        <div id="t-congrats" class="win-title">Félicitations !</div>
+        <div id="win-player-name" style="font-family:'Playfair Display',serif;font-size:clamp(16px,3vh,26px);color:var(--gold-light);">—</div>
+        <div id="win-level" style="font-size:clamp(12px,2vh,15px);color:var(--beige);font-style:italic;">—</div>
+        <div class="card" style="width:100%;max-width:480px;">
+          <div id="win-scores"></div>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;width:100%;max-width:480px;">
+          <button id="t-btn-home" class="btn btn-gold" onclick="window.location.href='index.html'" style="flex:1;min-width:140px;">🏠 Portail</button>
+          <button id="t-btn-replay" class="btn btn-primary" onclick="restartGame()" style="flex:1;min-width:140px;">🔄 Rejouer</button>
+        </div>
+      </div>
+    </div><!-- panel-169-inner -->
+  </div><!-- panel-169 -->
 </div>
 
 <!-- ══════════ SCREEN 7: ADMIN ══════════ -->
@@ -2159,20 +2214,20 @@ function showQuestionModal(q, cat) {
   content.innerHTML = `
     <div class="modal-cat ${catClass[cat] || 'cat-autres'}">${catLabels[cat] || cat}</div>
     <div class="modal-question">${q.question}</div>
-    <div style="display:flex;gap:12px;align-items:flex-start;">
-      <div style="flex:1;min-width:0;">
+    <div style="display:flex;gap:clamp(6px,1.2%,14px);align-items:stretch;flex:1;overflow:hidden;min-height:0;">
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;min-height:0;">
         ${propsHTML}
         ${hintsHTML}
       </div>
-      <div id="result-panel" style="flex:0 0 44%;min-width:0;display:flex;flex-direction:column;gap:8px;">
-        <div id="answer-area" style="display:none;">
+      <div id="result-panel" style="flex:0 0 38%;min-width:120px;max-width:280px;display:flex;flex-direction:column;gap:clamp(3px,0.6vh,6px);overflow:hidden;min-height:0;">
+        <div id="answer-area" style="display:none;flex-shrink:1;min-height:0;">
           <div class="answer-area">
-            <div class="answer-label">✅ Réponse correcte</div>
+            <div class="answer-label">✅ Réponse</div>
             <div class="answer-text">${q.reponse}</div>
           </div>
         </div>
-        <div id="result-zone"></div>
-        <div id="continue-btn"></div>
+        <div id="result-zone" style="flex-shrink:0;"></div>
+        <div id="continue-btn" style="flex-shrink:0;margin-top:auto;"></div>
       </div>
     </div>
   `;
