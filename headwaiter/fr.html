@@ -417,22 +417,22 @@
   #modal-content {
     flex: 1; overflow: hidden;
     display: flex; flex-direction: column;
-    padding: clamp(8px,1.8vh,18px) clamp(10px,2.2vw,24px);
+    padding: clamp(10px,2.2vh,22px) clamp(12px,2.5vw,28px);
     gap: 0; min-height: 0;
   }
 
   .modal-cat {
     display: inline-flex; align-items: center; gap: 6px;
     padding: 2px 10px; border-radius: 20px;
-    font-size: clamp(8px, 1.3vh, 11px); font-weight: 700;
+    font-size: clamp(11px, 2vh, 16px); font-weight: 700;
     text-transform: uppercase; letter-spacing: 1px;
     margin-bottom: clamp(3px, 0.7vh, 8px);
     flex-shrink: 0;
   }
   .modal-question {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(14px, 2.8vh, 22px); line-height: 1.45;
-    margin-bottom: clamp(6px, 1.1vh, 12px); color: var(--cream);
+    font-size: clamp(18px, 3.5vh, 28px); line-height: 1.5;
+    margin-bottom: clamp(8px, 1.4vh, 16px); color: var(--cream);
     font-weight: 400; flex-shrink: 0;
   }
   .propositions-list {
@@ -444,8 +444,8 @@
     background: rgba(255,255,255,0.05);
     border: 1px solid rgba(201,169,110,0.2);
     border-radius: 7px;
-    padding: clamp(4px, 0.9vh, 9px) clamp(7px, 1.3vh, 14px);
-    font-size: clamp(10px, 1.65vh, 13px); line-height: 1.3;
+    padding: clamp(7px, 1.4vh, 14px) clamp(10px, 1.8vh, 18px);
+    font-size: clamp(15px, 2.6vh, 20px); line-height: 1.4;
     color: var(--cream-dark);
     font-family: 'Source Sans 3', sans-serif;
     cursor: pointer;
@@ -506,16 +506,16 @@
     margin-bottom: clamp(4px,0.8vh,10px);
     border: 1px solid rgba(201,169,110,0.2);
   }
-  .answer-label { font-size: clamp(8px,1.2vh,11px); color: var(--beige); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; font-weight: 700; }
+  .answer-label { font-size: clamp(12px,1.8vh,15px); color: var(--beige); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; font-weight: 700; }
   .answer-text {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(10px,1.7vh,14px); color: var(--gold-light);
+    font-size: clamp(16px,2.5vh,20px); color: var(--gold-light);
     line-height: 1.4; font-style: italic;
   }
 
   .result-banner {
     padding: clamp(6px,1vh,10px); border-radius: 10px;
-    text-align: center; font-size: clamp(11px,1.7vh,14px); font-weight: 700;
+    text-align: center; font-size: clamp(16px,2.5vh,20px); font-weight: 700;
     display: none;
   }
   .result-banner.correct { background: rgba(20,80,20,0.7); color: #a8f090; border: 2px solid #5dc040; display: block; border-radius: 10px; }
@@ -529,12 +529,12 @@
   }
   .event-card .event-type {
     font-family: 'Cinzel Decorative', serif;
-    font-size: clamp(13px,2.2vh,18px); color: var(--gold);
+    font-size: clamp(20px,3.5vh,30px); color: var(--gold);
     margin-bottom: clamp(6px,1vh,12px);
   }
   .event-card .event-effet {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(12px,2vh,16px); line-height: 1.5;
+    font-size: clamp(18px,3.2vh,26px); line-height: 1.6;
     color: var(--cream); font-style: italic;
     margin-bottom: clamp(10px,1.5vh,20px);
   }
@@ -819,7 +819,7 @@
       </div>
 
       <!-- Layout 2 colonnes -->
-      <div style="display:flex;gap:clamp(10px,2vw,20px);width:100%;flex:1;min-height:0;align-items:stretch;">
+      <div style="display:flex;gap:clamp(6px,1.2vw,12px);width:100%;flex:1;min-height:0;align-items:stretch;overflow:hidden;">
 
         <!-- Colonne gauche : Solo -->
         <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:clamp(6px,1.2vh,12px);">
@@ -847,17 +847,17 @@
         <div style="width:1px;background:rgba(255,255,255,0.1);flex-shrink:0;"></div>
 
         <!-- Colonne droite : En ligne -->
-        <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:clamp(6px,1.2vh,12px);">
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:clamp(4px,0.7vh,8px);overflow:hidden;">
           <div style="font-size:clamp(11px,1.8vh,14px);font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:1px;">📲 En Ligne</div>
-          <div class="code-display" style="padding:clamp(8px,1.5vh,14px);margin-bottom:0;">
+          <div class="code-display" style="padding:clamp(5px,0.9vh,9px);margin-bottom:0;">
             <div id="t-room-label" class="code-label" style="font-size:clamp(9px,1.4vh,11px);">Code de la partie</div>
             <div class="code-value" id="room-code-display" style="font-size:clamp(20px,4vh,32px);">----</div>
           </div>
           <div>
-            <label style="font-size:clamp(10px,1.6vh,13px);color:var(--beige);display:block;margin-bottom:4px;">Votre nom</label>
+            <label style="font-size:clamp(10px,1.6vh,13px);color:var(--beige);display:block;margin-bottom:2px;">Votre nom</label>
             <input type="text" id="host-name" placeholder="Ex: Philippe" maxlength="16" style="width:100%;background:rgba(22,20,48,0.9);border:1px solid rgba(201,169,110,0.25);border-radius:8px;padding:clamp(5px,1vh,9px) 10px;color:var(--cream);font-size:clamp(12px,1.8vh,15px);font-family:'Source Sans 3',sans-serif;outline:none;">
           </div>
-          <button id="t-create-room" class="btn btn-gold" onclick="createOnlineRoom()" style="font-size:clamp(12px,1.8vh,15px);padding:clamp(7px,1.3vh,12px);">Créer la salle 🎩</button>
+          <button id="t-create-room" class="btn btn-gold" onclick="createOnlineRoom()" style="font-size:clamp(12px,1.8vh,15px);padding:clamp(5px,0.9vh,9px);">Créer la salle 🎩</button>
           <div id="online-waiting" class="hidden">
             <div id="t-online-label" style="font-size:clamp(11px,1.6vh,13px);color:var(--beige);margin-bottom:6px;font-weight:700;">Joueurs connectés</div>
             <div id="online-players-list" class="waiting-players"></div>
