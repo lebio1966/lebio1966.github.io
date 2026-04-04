@@ -1405,7 +1405,7 @@ function drawCell(ctx, x, y, w, h, caseIdx, side) {
   if (isCorner) {
     ctx.fillStyle = col + 'EE';
     rrect(ctx, x+1, y+1, w-2, h-2, 6); ctx.fill();
-    ctx.strokeStyle = '#F5C842'; ctx.lineWidth = 2.5;
+    ctx.strokeStyle = '#F5C842'; ctx.lineWidth = 1.0;
     rrect(ctx, x+1, y+1, w-2, h-2, 6); ctx.stroke();
     // Emoji centré
     const eSize = Math.round(Math.min(w, h) * 0.38);
@@ -1423,9 +1423,9 @@ function drawCell(ctx, x, y, w, h, caseIdx, side) {
   }
 
   // ── Cases normales : fond blanc + bande couleur ────────────────────────────
-  ctx.fillStyle = '#FAFAFA';
+  ctx.fillStyle = col + '28';
   rrect(ctx, x+1, y+1, w-2, h-2, 3); ctx.fill();
-  ctx.strokeStyle = '#333'; ctx.lineWidth = 1.2;
+  ctx.strokeStyle = col; ctx.lineWidth = 1.2;
   rrect(ctx, x+1, y+1, w-2, h-2, 3); ctx.stroke();
 
   // Bande couleur selon le côté
@@ -1489,9 +1489,10 @@ function drawBoard() {
   boardCellPositions = [];
 
   // Fond du plateau
+  // Fond du plateau
   ctx.fillStyle = '#0d2540';
   ctx.fillRect(0, 0, S, S);
-  ctx.strokeStyle = '#F5C842'; ctx.lineWidth = 4;
+  ctx.strokeStyle = '#F5C842'; ctx.lineWidth = 1.5;
   ctx.strokeRect(2, 2, S-4, S-4);
 
   // Bas (cases 0-9) : START en bas-gauche
