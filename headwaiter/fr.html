@@ -436,16 +436,16 @@
     font-weight: 400; flex-shrink: 0;
   }
   .propositions-list {
-    display: flex; flex-direction: column; gap: clamp(3px, 0.6vh, 6px);
-    margin-bottom: clamp(3px, 0.6vh, 8px);
+    display: flex; flex-direction: column; gap: clamp(8px, 1.4vh, 14px);
+    margin-bottom: clamp(6px, 1vh, 12px);
     flex: 1; overflow: hidden; min-height: 0;
   }
   .proposition-item {
     background: rgba(255,255,255,0.05);
     border: 1px solid rgba(201,169,110,0.2);
     border-radius: 7px;
-    padding: clamp(6px, 1.1vh, 11px) clamp(10px, 1.6vh, 16px);
-    font-size: clamp(13px, 2.1vh, 17px); line-height: 1.35;
+    padding: clamp(10px, 1.6vh, 16px) clamp(12px, 2vh, 20px);
+    font-size: clamp(15px, 2.5vh, 20px); line-height: 1.4;
     color: var(--cream-dark);
     font-family: 'Source Sans 3', sans-serif;
     cursor: pointer;
@@ -2126,28 +2126,32 @@ function handleEventCard(card) {
 
   switch(card.type) {
 
-    // ── Ch10/11/17 : AVANCER 6 cases → déplacer + déclencher la case d'arrivée ──
+    // ── Ch10/11/17 : AVANCER 6 cases → afficher carte D'ABORD, déplacer APRÈS fermeture ──
     case 'AVANCER': {
       const steps = parseInt((card.effet.match(/\d+/) || ['6'])[0]);
       const newPos = (player.position + steps) % TOTAL_CASES;
-      animateMove(pidx, player.position, steps, 0, () => {
-        player.position = newPos;
-        const cas = BOARD_CASES[newPos];
-        renderHouses();
-        showEventCard('⏩', 'AVANCER', card.effet, false, () => triggerCase(cas, player));
+      showEventCard('⏩', 'AVANCER', card.effet, false, () => {
+        animateMove(pidx, player.position, steps, 0, () => {
+          player.position = newPos;
+          const cas = BOARD_CASES[newPos];
+          renderHouses();
+          triggerCase(cas, player);
+        });
       });
       return;
     }
 
-    // ── Ch12/13/16 : RECULER 3 cases → déplacer + déclencher la case d'arrivée ──
+    // ── Ch12/13/16 : RECULER 3 cases → afficher carte D'ABORD, déplacer APRÈS fermeture ──
     case 'RECULER': {
       const startPos = player.position;
       const newPos   = (startPos - 3 + TOTAL_CASES) % TOTAL_CASES;
-      animateMoveBack(pidx, startPos, 3, 0, () => {
-        player.position = newPos;
-        const cas = BOARD_CASES[newPos];
-        renderHouses();
-        showEventCard('⏪', 'RECULER', card.effet, false, () => triggerCase(cas, player));
+      showEventCard('⏪', 'RECULER', card.effet, false, () => {
+        animateMoveBack(pidx, startPos, 3, 0, () => {
+          player.position = newPos;
+          const cas = BOARD_CASES[newPos];
+          renderHouses();
+          triggerCase(cas, player);
+        });
       });
       return;
     }
