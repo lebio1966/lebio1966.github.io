@@ -749,6 +749,25 @@
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: rgba(59,130,246,0.3); border-radius: 4px; }
 
+  /* ─── MONEY RAIN ─── */
+  .money-rain-container {
+    position: fixed; inset: 0; z-index: 200;
+    pointer-events: none; overflow: hidden;
+  }
+  .money-bill {
+    position: absolute;
+    font-size: 32px;
+    animation: moneyFall linear forwards;
+    will-change: transform;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+  }
+  @keyframes moneyFall {
+    0%   { transform: translateY(-60px) rotate(0deg) scale(0.8); opacity: 1; }
+    20%  { opacity: 1; }
+    80%  { opacity: 0.9; }
+    100% { transform: translateY(110vh) rotate(720deg) scale(0.6); opacity: 0; }
+  }
+
   /* ─── SEPARATOR ─── */
   .sep { height: 12px; }
   .sep-lg { height: 20px; }
@@ -2129,13 +2148,52 @@ function animateMoveBack(playerIdx, startPos, totalSteps, stepsDone, callback) {
 }
 
 // ═══════════════════════════════════════════════════════
+//  MONEY RAIN ANIMATION
+// ═══════════════════════════════════════════════════════
+function moneyRain(duration) {
+  duration = duration || 3000;
+  const container = document.createElement('div');
+  container.className = 'money-rain-container';
+  document.body.appendChild(container);
+
+  const bills = ['💵','💶','💴','💷','🪙','💰'];
+  const totalBills = 40;
+  let spawned = 0;
+
+  const spawnInterval = setInterval(() => {
+    if (spawned >= totalBills) { clearInterval(spawnInterval); return; }
+    const bill = document.createElement('div');
+    bill.className = 'money-bill';
+    bill.textContent = bills[Math.floor(Math.random() * bills.length)];
+    const x = Math.random() * 100;
+    const size = 20 + Math.random() * 24;
+    const fallDuration = 2 + Math.random() * 2.5;
+    const delay = Math.random() * 0.3;
+    bill.style.cssText = `
+      left: ${x}%;
+      font-size: ${size}px;
+      animation-duration: ${fallDuration}s;
+      animation-delay: ${delay}s;
+    `;
+    container.appendChild(bill);
+    spawned++;
+  }, duration / totalBills);
+
+  // Nettoyage après la fin de toutes les animations
+  setTimeout(() => {
+    container.remove();
+  }, duration + 5000);
+}
+
+// ═══════════════════════════════════════════════════════
 //  CASE TRIGGER
 // ═══════════════════════════════════════════════════════
 function triggerCase(cas, player) {
   if (cas.type === 'START') {
-    // Bonus passage départ : +50 points avec popup auto-fermeture 5s
+    // Bonus passage départ : +50 points avec popup auto-fermeture 5s + pluie de billets
     player.score += 50;
     updateGameUI();
+    moneyRain(4000);
     const modal   = document.getElementById('question-modal');
     const content = document.getElementById('modal-content');
     content.innerHTML = `
@@ -2374,34 +2432,51 @@ function handleEventCard(card) {
 
     // ── Ch30/31 : CASE DEPART → retour case 0 + 50 points ──
     case 'CASE DEPART': {
-      player.position = 0;
-      player.score   += 50;
-      movePion(pidx);
-      updateGameUI();
-      showEventCard('🎩', 'RETOUR AU DÉPART !', card.effet + '\n+50 points crédités !', true);
+      const startPos = player.position;
+      showEventCard('🎩', 'RETOUR AU DÉPART !', card.effet + '\n+50 points crédités !', true, () => {
+        // Après fermeture popup : animer le déplacement vers la case départ
+        const stepsBack = (TOTAL_CASES - startPos) % TOTAL_CASES || TOTAL_CASES;
+        animateMove(pidx, startPos, stepsBack, 0, () => {
+          player.position = 0;
+          player.score += 50;
+          movePion(pidx);
+          renderHouses();
+          updateGameUI();
+          moneyRain(3000);
+          showToast('🎩 +50 points !');
+          setTimeout(() => nextTurn(), 800);
+        });
+      });
       return;
     }
 
     // ── CH19 : CASE DEPART 200 → retour case 0 + 200 pts (compteur) ──
     case 'CASE DEPART 200': {
-      player.position = 0;
-      movePion(pidx);
+      const startPos = player.position;
       showEventCard('🎩', 'RETOUR AU DÉPART !', card.effet, true, () => {
-        // Compteur +200 pts sur 2s
-        const target  = player.score + 200;
-        const steps   = 20;
-        let current   = player.score;
-        const inc     = Math.ceil(200 / steps);
-        const iv = setInterval(() => {
-          current = Math.min(target, current + inc);
-          player.score = current;
-          updateGameUI();
-          if (current >= target) {
-            clearInterval(iv);
-            showToast('🎩 +200 points !');
-            setTimeout(() => nextTurn(), 800);
-          }
-        }, 100);
+        // Après fermeture popup : animer le déplacement vers la case départ
+        const stepsBack = (TOTAL_CASES - startPos) % TOTAL_CASES || TOTAL_CASES;
+        animateMove(pidx, startPos, stepsBack, 0, () => {
+          player.position = 0;
+          movePion(pidx);
+          renderHouses();
+          moneyRain(4500);
+          // Compteur +200 pts sur 2s
+          const target  = player.score + 200;
+          const steps   = 20;
+          let current   = player.score;
+          const inc     = Math.ceil(200 / steps);
+          const iv = setInterval(() => {
+            current = Math.min(target, current + inc);
+            player.score = current;
+            updateGameUI();
+            if (current >= target) {
+              clearInterval(iv);
+              showToast('🎩 +200 points !');
+              setTimeout(() => nextTurn(), 800);
+            }
+          }, 100);
+        });
       });
       return;
     }
