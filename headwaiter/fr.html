@@ -2504,11 +2504,27 @@ function handleEventCard(card) {
       return;
     }
 
-    // ── Ch41/42/43 : MALUS SCORE → -25% points ──
+    // ── MALUS SCORE → -25% points avec compteur après popup ──
     case 'MALUS SCORE': {
-      player.score = Math.floor(player.score * 0.75);
-      updateGameUI();
-      break;
+      const penalty25 = Math.floor(player.score * 0.25);
+      showEventCard('💸', 'MALUS !', card.effet, true, () => {
+        setTimeout(() => {
+          const target25 = Math.max(0, player.score - penalty25);
+          let cur25 = player.score;
+          const step25 = Math.ceil((cur25 - target25) / 20) || 1;
+          const iv25 = setInterval(() => {
+            cur25 = Math.max(target25, cur25 - step25);
+            player.score = cur25;
+            updateGameUI();
+            if (cur25 <= target25) {
+              clearInterval(iv25);
+              showToast(`💸 -${penalty25} points (25%) !`);
+              setTimeout(() => nextTurn(), 800);
+            }
+          }, 100);
+        }, 200);
+      });
+      return;
     }
 
     // ── Cas existants conservés ──
@@ -2569,19 +2585,16 @@ function handleEventCard(card) {
     case 'PETITE PAUSE':
       state.waitingAtBar[pidx] = 1;
       break;
-    // ── CO7-CO10 : BONUS POINTS → +100 pts avec compteur après fermeture popup ──
+    // ── BONUS POINTS → +100 pts avec compteur + pluie de billets après fermeture popup ──
     case 'BONUS POINTS': {
       showEventCard('🎁', 'BONUS !', card.effet, true, () => {
-        // Pause 200ms puis compteur à rebours sur 2s (20 étapes × 100ms)
         setTimeout(() => {
+          moneyRain(3000);
           const target  = player.score + 100;
-          const totalMs = 2000;
           const steps   = 20;
           const stepVal = Math.ceil(100 / steps);
-          let added = 0;
           const bonusInterval = setInterval(() => {
-            added = Math.min(added + stepVal, 100);
-            player.score = player.score + stepVal <= target ? player.score + stepVal : target;
+            player.score = Math.min(target, player.score + stepVal);
             updateGameUI();
             if (player.score >= target) {
               player.score = target;
@@ -2590,7 +2603,7 @@ function handleEventCard(card) {
               showToast('🎁 +100 points !');
               setTimeout(() => nextTurn(), 800);
             }
-          }, totalMs / steps);
+          }, 100);
         }, 200);
       });
       return;
@@ -2651,21 +2664,42 @@ function handleEventCard(card) {
       return;
     }
 
-    // ── ANNIVERSAIRE+ → -10 pts par adversaire, +10×N au joueur ──
+    // ── ANNIVERSAIRE+ → -10 pts par adversaire, +10×N au joueur avec compteur + pluie ──
     case 'ANNIVERSAIRE+': {
       showEventCard('🎁', 'ANNIVERSAIRE+ !', card.effet, true, () => {
-        let totalGain = 0;
-        state.players.forEach((p, i) => {
-          if (i !== pidx) {
-            const don = Math.min(10, p.score);
-            p.score -= don;
-            totalGain += don;
+        setTimeout(() => {
+          // D'abord retirer 10 pts à chaque adversaire
+          let totalGain = 0;
+          state.players.forEach((p, i) => {
+            if (i !== pidx) {
+              const don = Math.min(10, p.score);
+              p.score -= don;
+              totalGain += don;
+            }
+          });
+          updateGameUI();
+          if (totalGain > 0) {
+            moneyRain(3000);
+            // Compteur : créditer les gains progressivement
+            const target = player.score + totalGain;
+            const steps = Math.min(20, totalGain);
+            const inc = Math.ceil(totalGain / steps);
+            const iv = setInterval(() => {
+              player.score = Math.min(target, player.score + inc);
+              updateGameUI();
+              if (player.score >= target) {
+                player.score = target;
+                clearInterval(iv);
+                updateGameUI();
+                showToast(`🎁 +${totalGain} points reçus des autres équipes !`);
+                setTimeout(() => nextTurn(), 800);
+              }
+            }, 100);
+          } else {
+            showToast('🎁 Aucun point à recevoir');
+            setTimeout(() => nextTurn(), 800);
           }
-        });
-        player.score += totalGain;
-        updateGameUI();
-        showToast(`🎁 +${totalGain} points reçus des autres équipes !`);
-        setTimeout(() => nextTurn(), 800);
+        }, 200);
       });
       return;
     }
@@ -2748,13 +2782,26 @@ function handleEventCard(card) {
       player._indiceBonus = true;
       break;
 
-    // ── REPONSE INVERSEE → +100 pts cadeau ──
+    // ── REPONSE INVERSEE → +100 pts avec compteur + pluie de billets après popup ──
     case 'REPONSE INVERSEE': {
       showEventCard('🔄', 'ERREUR EN VOTRE FAVEUR !', card.effet, true, () => {
-        player.score += 100;
-        updateGameUI();
-        showToast('🎁 +100 points !');
-        setTimeout(() => nextTurn(), 800);
+        setTimeout(() => {
+          moneyRain(3000);
+          const target = player.score + 100;
+          const steps = 20;
+          const inc = Math.ceil(100 / steps);
+          const iv = setInterval(() => {
+            player.score = Math.min(target, player.score + inc);
+            updateGameUI();
+            if (player.score >= target) {
+              player.score = target;
+              clearInterval(iv);
+              updateGameUI();
+              showToast('🎁 +100 points !');
+              setTimeout(() => nextTurn(), 800);
+            }
+          }, 100);
+        }, 200);
       });
       return;
     }
