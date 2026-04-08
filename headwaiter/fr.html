@@ -2190,36 +2190,26 @@ function moneyRain(duration) {
 // ═══════════════════════════════════════════════════════
 function triggerCase(cas, player) {
   if (cas.type === 'START') {
-    // Bonus passage départ : +50 points avec popup auto-fermeture 5s + pluie de billets
-    player.score += 50;
-    updateGameUI();
-    moneyRain(4000);
-    const modal   = document.getElementById('question-modal');
-    const content = document.getElementById('modal-content');
-    content.innerHTML = `
-      <div class="event-card">
-        <div class="event-icon">🎩</div>
-        <div class="event-type">PASSAGE PAR LA CASE DÉPART !</div>
-        <div class="event-effet" style="font-size:clamp(16px,2.8vh,22px);font-weight:700;color:var(--gold);">
-          🏆 Vous remportez <span id="depart-pts" style="font-size:clamp(22px,3.5vh,30px);">50</span> points !
-        </div>
-        <div style="margin-top:8px;font-size:clamp(11px,1.8vh,14px);color:var(--beige);opacity:0.7;">
-          Fermeture automatique dans <span id="depart-countdown">5</span>s…
-        </div>
-      </div>`;
-    modal.classList.add('active');
-    // Compte à rebours d'affichage
-    let secs = 5;
-    const cdInterval = setInterval(() => {
-      secs--;
-      const el = document.getElementById('depart-countdown');
-      if (el) el.textContent = secs;
-      if (secs <= 0) {
-        clearInterval(cdInterval);
-        modal.classList.remove('active');
-        setTimeout(() => nextTurn(), 300);
-      }
-    }, 1000);
+    // Bonus passage départ : popup d'abord, puis +50 pts compteur + pluie de billets après fermeture
+    showEventCard('🎩', 'PASSAGE PAR LA CASE DÉPART !', '🏆 Vous remportez 50 points !', true, () => {
+      setTimeout(() => {
+        moneyRain(3000);
+        const target = player.score + 50;
+        const steps = 10;
+        const inc = Math.ceil(50 / steps);
+        const iv = setInterval(() => {
+          player.score = Math.min(target, player.score + inc);
+          updateGameUI();
+          if (player.score >= target) {
+            player.score = target;
+            clearInterval(iv);
+            updateGameUI();
+            showToast('🎩 +50 points !');
+            setTimeout(() => nextTurn(), 800);
+          }
+        }, 100);
+      }, 200);
+    });
     return;
   }
   if (cas.type === 'PETITE_PAUSE' || cas.type === 'PAUSE_COIN' || cas.type === 'BAR') {
