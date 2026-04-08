@@ -848,6 +848,258 @@
   }
   .lang-btn:hover { opacity: 0.85; transform: scale(1.1); }
   .lang-btn.active { opacity: 1; transform: scale(1.15); filter: drop-shadow(0 0 4px rgba(255,220,100,0.6)); }
+
+  /* ════════════════════════════════════════════════════════════
+     ██  RESPONSIVE SMARTPHONE — MODE PORTRAIT  ██
+     ════════════════════════════════════════════════════════════ */
+  @media (max-width: 768px) and (orientation: portrait) {
+
+    /* ── Libérer le conteneur du ratio 16:9 ── */
+    #app-container {
+      aspect-ratio: unset !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      max-width: 100vw !important;
+      max-height: 100vh !important;
+    }
+
+    /* ── Écrans : occuper tout l'espace ── */
+    .screen {
+      padding: 12px !important;
+    }
+
+    /* ── Game screen : empiler verticalement ── */
+    #game-screen {
+      flex-direction: column !important;
+      overflow-y: auto !important;
+      padding: 0 !important;
+    }
+
+    /* ── Plateau : en haut, compact ── */
+    .game-left {
+      width: 100% !important;
+      height: auto !important;
+      flex: 0 0 auto !important;
+      padding: 6px !important;
+      border-right: none !important;
+      border-bottom: 1.5px solid rgba(255,255,255,0.08);
+    }
+    .board-container {
+      max-height: 42vh !important;
+      max-width: 42vh !important;
+      margin: 0 auto;
+    }
+
+    /* ── Panneau droit : en dessous, scrollable ── */
+    .game-right {
+      width: 100% !important;
+      flex: 1 1 auto !important;
+      padding: 8px 12px !important;
+      gap: 6px !important;
+      overflow-y: auto !important;
+      min-height: 0;
+    }
+
+    /* ── Topbar plus compacte ── */
+    .game-topbar {
+      padding: 4px 8px !important;
+      gap: 6px !important;
+    }
+    .game-topbar .turn-player { font-size: 13px !important; }
+    .game-topbar .turn-info { font-size: 10px !important; }
+
+    /* ── Joueurs : grille horizontale compacte ── */
+    .players-panel {
+      gap: 4px !important;
+    }
+    .player-row {
+      padding: 4px 8px !important;
+      font-size: 12px !important;
+    }
+
+    /* ── Dé : plus petit ── */
+    .dice-area {
+      padding: 6px 10px !important;
+      gap: 8px !important;
+    }
+    .dice {
+      width: 44px !important; height: 44px !important;
+      font-size: 22px !important;
+      border-radius: 12px !important;
+    }
+
+    /* ══════════════════════════════════════════
+       MODALE QUESTIONS — plein écran mobile
+       ══════════════════════════════════════════ */
+    .modal {
+      width: 96vw !important;
+      height: 92vh !important;
+      max-width: none !important;
+      max-height: none !important;
+      border-radius: 12px !important;
+    }
+    #modal-content {
+      padding: 12px 14px !important;
+      overflow-y: auto !important;
+      gap: 4px !important;
+    }
+
+    /* ── Catégorie ── */
+    .modal-cat {
+      font-size: 11px !important;
+      padding: 3px 10px !important;
+      margin-bottom: 6px !important;
+    }
+
+    /* ── Question ── */
+    .modal-question {
+      font-size: 16px !important;
+      line-height: 1.4 !important;
+      margin-bottom: 10px !important;
+    }
+
+    /* ── Propositions : scrollables ── */
+    .propositions-list {
+      overflow-y: auto !important;
+      flex: 0 1 auto !important;
+      gap: 8px !important;
+      margin-bottom: 8px !important;
+      max-height: 35vh !important;
+    }
+    .proposition-item {
+      font-size: 14px !important;
+      padding: 10px 12px !important;
+      line-height: 1.35 !important;
+      flex-shrink: 0 !important;
+    }
+
+    /* ── Zone résultat & réponse : empiler verticalement ── */
+    .modal-body-row {
+      flex-direction: column !important;
+      overflow-y: auto !important;
+      flex: 1 1 auto !important;
+    }
+    .modal-props-col {
+      flex: 0 1 auto !important;
+      overflow: visible !important;
+    }
+    #result-panel {
+      flex: 0 0 auto !important;
+      max-width: none !important;
+      min-width: 0 !important;
+      width: 100% !important;
+    }
+    .answer-area {
+      padding: 8px 10px !important;
+    }
+    .answer-label {
+      font-size: 10px !important;
+    }
+    .answer-text {
+      font-size: 14px !important;
+      line-height: 1.4 !important;
+    }
+    .result-banner {
+      font-size: 13px !important;
+      padding: 8px !important;
+    }
+
+    /* ── Boutons ── */
+    .btn {
+      font-size: 14px !important;
+      padding: 10px 16px !important;
+    }
+
+    /* ══════════════════════════════════════════
+       CARTES ÉVÉNEMENTS (Chance / Communauté)
+       ══════════════════════════════════════════ */
+    .event-card {
+      padding: 16px 14px !important;
+    }
+    .event-icon {
+      font-size: 42px !important;
+      margin-bottom: 10px !important;
+    }
+    .event-card .event-type {
+      font-size: 20px !important;
+      margin-bottom: 8px !important;
+    }
+    .event-card .event-effet {
+      font-size: 16px !important;
+      line-height: 1.5 !important;
+      margin-bottom: 12px !important;
+    }
+
+    /* ── Timer ── */
+    #question-timer {
+      height: 40px !important;
+    }
+    .modal:has(#question-timer.active) #modal-content {
+      padding-top: 46px !important;
+    }
+
+    /* ── Indice bonus ── */
+    div[style*="background:linear-gradient(135deg,#2D5016"] {
+      font-size: 13px !important;
+      padding: 8px 12px !important;
+    }
+
+    /* ── Score badge ── */
+    .score-badge { font-size: 11px !important; padding: 2px 8px !important; }
+
+    /* ── Logo écran d'accueil ── */
+    .logo-icon {
+      width: 64px !important; height: 64px !important;
+      font-size: 36px !important;
+    }
+    .logo-title { font-size: 32px !important; }
+    .logo-sub { font-size: 11px !important; }
+
+    /* ── Toast notifications ── */
+    .toast-container {
+      bottom: 10px !important;
+      font-size: 13px !important;
+    }
+
+    /* ── Multi-checkbox ── */
+    .multi-checkbox {
+      width: 20px !important; height: 20px !important;
+      font-size: 12px !important;
+    }
+  }
+
+  /* ════════════════════════════════════════════════════════════
+     ██  PETITS ÉCRANS PAYSAGE (ex: iPhone en landscape)  ██
+     ════════════════════════════════════════════════════════════ */
+  @media (max-height: 450px) and (orientation: landscape) {
+    .modal {
+      width: 98vw !important;
+      height: 96vh !important;
+      max-width: none !important;
+      max-height: none !important;
+    }
+    #modal-content {
+      overflow-y: auto !important;
+      padding: 6px 10px !important;
+    }
+    .modal-question {
+      font-size: 14px !important;
+      margin-bottom: 6px !important;
+    }
+    .propositions-list {
+      overflow-y: auto !important;
+      max-height: 40vh !important;
+      gap: 4px !important;
+    }
+    .proposition-item {
+      font-size: 13px !important;
+      padding: 6px 10px !important;
+    }
+    .event-card .event-effet {
+      font-size: 16px !important;
+    }
+    .event-icon { font-size: 30px !important; }
+  }
 </style>
 </head>
 <body>
@@ -3059,8 +3311,8 @@ function showQuestionModal(q, cat) {
     <div class="modal-cat ${catClass[cat] || 'cat-autres'}">${catLabels[cat] || cat}${dpBadge}</div>
     <div class="modal-question">${q.question}</div>
     ${indiceText ? '<div style="background:linear-gradient(135deg,#2D5016,#1a3a0e);border:1px solid #4a8a2a;border-radius:8px;padding:8px 14px;margin-bottom:8px;font-size:clamp(11px,1.5vh,15px);color:#c8e6a0;text-align:center;"><span style="margin-right:6px;">💡</span><b>Indice :</b> ' + indiceText + '</div>' : ''}
-    <div style="display:flex;gap:clamp(6px,1.2%,14px);align-items:stretch;flex:1;overflow:hidden;min-height:0;">
-      <div style="flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;min-height:0;">
+    <div class="modal-body-row" style="display:flex;gap:clamp(6px,1.2%,14px);align-items:stretch;flex:1;overflow:hidden;min-height:0;">
+      <div class="modal-props-col" style="flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;min-height:0;">
         ${propsHTML}
         ${hintsHTML}
       </div>
