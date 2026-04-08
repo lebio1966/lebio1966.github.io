@@ -2384,6 +2384,32 @@ function animateMove(playerIdx, startPos, totalSteps, stepsDone, callback) {
   const nextPos = (startPos + stepsDone + 1) % TOTAL_CASES;
   p.position = nextPos;
   movePion(playerIdx);
+
+  // Passage par la case DÉPART (case 0) sans s'y arrêter → pause + récompense
+  if (nextPos === 0 && stepsDone + 1 < totalSteps) {
+    showEventCard('🎩', 'PASSAGE PAR LA CASE DÉPART !', '🏆 Vous remportez 50 points !', true, () => {
+      setTimeout(() => {
+        moneyRain(3000);
+        const target = p.score + 50;
+        const steps2 = 10;
+        const inc = Math.ceil(50 / steps2);
+        const iv = setInterval(() => {
+          p.score = Math.min(target, p.score + inc);
+          updateGameUI();
+          if (p.score >= target) {
+            p.score = target;
+            clearInterval(iv);
+            updateGameUI();
+            showToast('🎩 +50 points !');
+            // Reprendre le déplacement après la récompense
+            setTimeout(() => animateMove(playerIdx, startPos, totalSteps, stepsDone+1, callback), 800);
+          }
+        }, 100);
+      }, 200);
+    });
+    return;
+  }
+
   setTimeout(() => animateMove(playerIdx, startPos, totalSteps, stepsDone+1, callback), 200);
 }
 
