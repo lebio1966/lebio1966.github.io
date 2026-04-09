@@ -438,22 +438,19 @@
     letter-spacing: 0.3px;
   }
   .propositions-list {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: clamp(8px, 1.2vh, 12px);
+    display: flex; flex-direction: column;
+    gap: clamp(6px, 1vh, 10px);
     margin-bottom: clamp(6px, 1vh, 12px);
-    flex: 1; overflow: hidden; min-height: 0;
-    align-content: center;
-  }
-  .propositions-list.single-col {
-    grid-template-columns: 1fr;
+    flex: 0 1 auto; overflow: visible; min-height: 0;
+    justify-content: center;
+    max-width: 50%;
   }
   .proposition-item {
     background: rgba(255,255,255,0.06);
     border: 1.5px solid rgba(201,169,110,0.25);
     border-radius: 12px;
-    padding: clamp(12px, 2vh, 20px) clamp(14px, 2vw, 22px);
-    font-size: clamp(14px, 2.2vh, 19px); line-height: 1.45;
+    padding: clamp(10px, 1.6vh, 16px) clamp(14px, 2vw, 22px);
+    font-size: clamp(14px, 2.2vh, 19px); line-height: 1.4;
     color: var(--cream);
     font-family: 'Source Sans 3', sans-serif;
     cursor: pointer;
@@ -462,6 +459,7 @@
     position: relative;
     display: flex; align-items: center;
     -webkit-tap-highlight-color: transparent;
+    flex-shrink: 1; flex-grow: 0;
   }
   @media (hover: hover) {
     .proposition-item:not(.selected):hover {
@@ -538,20 +536,27 @@
   #question-timer {
     display: none;
     position: absolute;
-    top: 0; left: 0; right: 0;
-    height: clamp(36px, 5.5vh, 48px);
+    top: clamp(8px,1.5vh,16px); right: clamp(8px,1.5vw,16px);
+    width: clamp(56px, 8vh, 72px); height: clamp(56px, 8vh, 72px);
     align-items: center;
     justify-content: center;
-    gap: clamp(6px,1vw,12px);
-    background: rgba(16,12,40,0.92);
-    border-bottom: 2px solid #e85d5d;
+    background: rgba(16,12,40,0.95);
+    border: 3px solid #e85d5d;
+    border-radius: 50%;
     z-index: 10;
-    padding: 0 clamp(10px,2vw,20px);
+    box-shadow: 0 0 20px rgba(232,93,93,0.4), 0 4px 12px rgba(0,0,0,0.5);
+    flex-direction: column;
+    gap: 0;
   }
   #question-timer.active { display: flex; }
+  #question-timer .timer-label { display: none; }
+  #question-timer #timer-progress-bar { display: none; }
+  #question-timer .timer-ring {
+    width: 100%; height: 100%;
+  }
   /* Quand timer actif, décaler le contenu pour ne pas masquer */
   .modal:has(#question-timer.active) #modal-content {
-    padding-top: clamp(40px,6.5vh,54px);
+    padding-top: 0 !important;
   }
   .timer-ring {
     position: relative;
@@ -571,7 +576,7 @@
     position: absolute; inset: 0;
     display: flex; align-items: center; justify-content: center;
     font-family: 'Fredoka One', cursive;
-    font-size: clamp(11px,1.8vw,17px); color: #e85d5d; font-weight: 700;
+    font-size: clamp(18px,3vh,28px); color: #e85d5d; font-weight: 700;
   }
   #timer-count.warn { color: #EF9F27; }
   #timer-count.ok   { color: #5dc040; }
@@ -971,12 +976,12 @@
 
     /* ── Propositions : scrollables ── */
     .propositions-list {
-      grid-template-columns: 1fr !important;
       overflow-y: auto !important;
       flex: 0 1 auto !important;
       gap: 8px !important;
       margin-bottom: 8px !important;
       max-height: 35vh !important;
+      max-width: 100% !important;
     }
     .proposition-item {
       font-size: 14px !important;
@@ -990,6 +995,17 @@
       flex-direction: column !important;
       overflow-y: auto !important;
       flex: 1 1 auto !important;
+    }
+    .modal-left {
+      flex: 1 1 auto !important;
+      max-width: 100% !important;
+      flex-direction: column !important;
+    }
+    .indice-panel {
+      max-width: 100% !important;
+    }
+    .propositions-list {
+      max-width: 100% !important;
     }
     .modal-props-col {
       flex: 0 1 auto !important;
@@ -1044,10 +1060,11 @@
 
     /* ── Timer ── */
     #question-timer {
-      height: 40px !important;
+      width: 52px !important; height: 52px !important;
+      top: 6px !important; right: 6px !important;
     }
     .modal:has(#question-timer.active) #modal-content {
-      padding-top: 46px !important;
+      padding-top: 0 !important;
     }
 
     /* ── Indice bonus ── */
@@ -1099,7 +1116,6 @@
       margin-bottom: 6px !important;
     }
     .propositions-list {
-      grid-template-columns: 1fr !important;
       overflow-y: auto !important;
       max-height: 40vh !important;
       gap: 4px !important;
@@ -3293,7 +3309,7 @@ function showQuestionModal(q, cat) {
 
     if (isMultiAnswer) {
       // ── Mode MULTI-RÉPONSES : cases à cocher ──
-      propsHTML = `<div class="propositions-list${props.length <= 3 ? ' single-col' : ''}" id="props-list">
+      propsHTML = `<div class="propositions-list" id="props-list">
         ${props.map(p => {
           const m = p.trim().match(letterRegex);
           const letter = m ? m[1].toUpperCase() : '';
@@ -3311,7 +3327,7 @@ function showQuestionModal(q, cat) {
         </div>`;
     } else {
       // ── Mode UNE SEULE RÉPONSE ──
-      propsHTML = `<div class="propositions-list${props.length <= 3 ? ' single-col' : ''}" id="props-list">
+      propsHTML = `<div class="propositions-list" id="props-list">
         ${props.map(p => {
           const m = p.trim().match(letterRegex);
           const letter = m ? m[1].toUpperCase() : '';
@@ -3342,17 +3358,17 @@ function showQuestionModal(q, cat) {
     ? '<span style="float:right;font-size:clamp(14px,2vh,20px);" title="Points doublés !">🎁 ×2</span>' : '';
 
   content.innerHTML = `
-    <div style="display:flex;align-items:center;gap:clamp(8px,1.5vw,16px);margin-bottom:clamp(6px,1vh,12px);flex-shrink:0;">
-      <div class="modal-cat ${catClass[cat] || 'cat-autres'}" style="margin-bottom:0;">${catLabels[cat] || cat}${dpBadge}</div>
-      ${indiceText ? '<div style="background:linear-gradient(135deg,#2D5016,#1a3a0e);border:1px solid #4a8a2a;border-radius:20px;padding:4px 14px;font-size:clamp(10px,1.3vh,13px);color:#c8e6a0;white-space:nowrap;"><span style="margin-right:4px;">💡</span>' + indiceText + '</div>' : ''}
-    </div>
+    <div class="modal-cat ${catClass[cat] || 'cat-autres'}">${catLabels[cat] || cat}${dpBadge}</div>
     <div class="modal-question">${q.question}</div>
-    <div class="modal-body-row" style="display:flex;gap:clamp(12px,2%,24px);align-items:stretch;flex:1;overflow:hidden;min-height:0;">
-      <div class="modal-props-col" style="flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;min-height:0;justify-content:center;">
-        ${propsHTML}
-        ${hintsHTML}
+    <div class="modal-body-row" style="display:flex;gap:clamp(12px,2%,24px);flex:1;overflow:hidden;min-height:0;">
+      <div class="modal-left" style="flex:0 1 50%;display:flex;gap:clamp(10px,1.5%,18px);min-width:0;overflow:hidden;">
+        <div class="modal-props-col" style="flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;overflow:hidden;">
+          ${propsHTML}
+          ${hintsHTML}
+        </div>
+        ${indiceText ? '<div class="indice-panel" style="flex:0 0 auto;max-width:45%;display:flex;align-items:center;"><div style="background:linear-gradient(145deg,#2D5016,#1a3a0e);border:1px solid #4a8a2a;border-radius:12px;padding:clamp(10px,1.5vh,16px);font-size:clamp(12px,1.8vh,16px);color:#c8e6a0;line-height:1.5;"><span style="display:block;font-weight:800;margin-bottom:4px;color:#7ddf64;font-size:clamp(10px,1.3vh,13px);text-transform:uppercase;letter-spacing:1.5px;">💡 Indice</span>' + indiceText + '</div></div>' : ''}
       </div>
-      <div id="result-panel" style="flex:0 0 44%;min-width:180px;max-width:420px;display:flex;flex-direction:column;gap:clamp(8px,1.2vh,14px);overflow:hidden;min-height:0;justify-content:center;">
+      <div id="result-panel" style="flex:1;min-width:200px;display:flex;flex-direction:column;gap:clamp(8px,1.2vh,14px);overflow:hidden;min-height:0;justify-content:center;">
         <div id="answer-area" style="display:none;">
           <div class="answer-area">
             <div class="answer-label">✅ RÉPONSE CORRECTE</div>
