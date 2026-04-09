@@ -423,37 +423,45 @@
 
   .modal-cat {
     display: inline-flex; align-items: center; gap: 8px;
-    padding: 4px 14px; border-radius: 20px;
-    font-size: clamp(10px, 1.5vh, 14px); font-weight: 800;
-    text-transform: uppercase; letter-spacing: 1.5px;
+    padding: 5px 16px; border-radius: 20px;
+    font-size: clamp(11px, 1.6vh, 15px); font-weight: 800;
+    text-transform: uppercase; letter-spacing: 2px;
     margin-bottom: clamp(4px, 1vh, 10px);
     flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
   }
   .modal-question {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(16px, 3vh, 24px); line-height: 1.5;
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(16px, 2.8vh, 23px); line-height: 1.45;
     margin-bottom: clamp(8px, 1.4vh, 14px); color: var(--cream);
-    font-weight: 500; flex-shrink: 0;
+    font-weight: 400; flex-shrink: 0;
+    letter-spacing: 0.3px;
   }
   .propositions-list {
-    display: flex; flex-direction: column; gap: clamp(8px, 1.4vh, 14px);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(8px, 1.2vh, 12px);
     margin-bottom: clamp(6px, 1vh, 12px);
     flex: 1; overflow: hidden; min-height: 0;
+    align-content: center;
+  }
+  .propositions-list.single-col {
+    grid-template-columns: 1fr;
   }
   .proposition-item {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(201,169,110,0.3);
-    border-radius: 10px;
-    padding: clamp(12px, 1.8vh, 18px) clamp(14px, 2.2vh, 22px);
-    font-size: clamp(15px, 2.5vh, 20px); line-height: 1.4;
-    color: var(--cream-dark);
+    background: rgba(255,255,255,0.06);
+    border: 1.5px solid rgba(201,169,110,0.25);
+    border-radius: 12px;
+    padding: clamp(12px, 2vh, 20px) clamp(14px, 2vw, 22px);
+    font-size: clamp(14px, 2.2vh, 19px); line-height: 1.45;
+    color: var(--cream);
     font-family: 'Source Sans 3', sans-serif;
     cursor: pointer;
-    transition: background .15s ease, border-color .15s ease, color .15s ease;
+    transition: all .2s ease;
     user-select: none;
     position: relative;
+    display: flex; align-items: center;
     -webkit-tap-highlight-color: transparent;
-    flex-shrink: 1;
   }
   @media (hover: hover) {
     .proposition-item:not(.selected):hover {
@@ -501,27 +509,28 @@
   }
 
   .answer-area {
-    background: rgba(0,0,0,0.5);
-    border-radius: 12px; padding: clamp(10px,1.8vh,18px);
-    margin-bottom: clamp(6px,1vh,12px);
-    border: 1px solid rgba(201,169,110,0.35);
-    box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    background: linear-gradient(145deg, rgba(10,20,40,0.8), rgba(15,12,50,0.9));
+    border-radius: 14px; padding: clamp(14px,2.2vh,24px);
+    margin-bottom: clamp(8px,1.2vh,14px);
+    border: 1.5px solid rgba(201,169,110,0.4);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
   }
-  .answer-label { font-size: clamp(10px,1.5vh,14px); color: var(--gold); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; font-weight: 800; }
+  .answer-label { font-size: clamp(11px,1.6vh,15px); color: #7ddf64; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; font-weight: 800; border-bottom: 1px solid rgba(125,223,100,0.3); padding-bottom: 6px; }
   .answer-text {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(14px,2.4vh,20px); color: var(--gold-light);
-    line-height: 1.5; font-style: italic;
-    letter-spacing: 0.2px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: clamp(15px,2.5vh,22px); color: #f0d890;
+    line-height: 1.55; font-style: normal; font-weight: 600;
+    letter-spacing: 0.3px;
   }
 
   .result-banner {
-    padding: clamp(10px,1.6vh,16px); border-radius: 12px;
-    text-align: center; font-size: clamp(14px,2.2vh,18px); font-weight: 800;
-    display: none; line-height: 1.5;
+    padding: clamp(14px,2vh,22px); border-radius: 14px;
+    text-align: center; font-size: clamp(15px,2.4vh,20px); font-weight: 800;
+    display: none; line-height: 1.6;
+    letter-spacing: 0.3px;
   }
-  .result-banner.correct { background: rgba(20,80,20,0.85); color: #c0ff9f; border: 2px solid #6ddb4a; display: block; border-radius: 12px; box-shadow: 0 0 20px rgba(93,192,64,0.3); }
-  .result-banner.wrong { background: rgba(100,15,15,0.85); color: #ffcaca; border: 2px solid #e04545; display: block; border-radius: 12px; box-shadow: 0 0 20px rgba(208,64,64,0.3); }
+  .result-banner.correct { background: linear-gradient(135deg, rgba(20,90,20,0.9), rgba(15,60,15,0.95)); color: #c8ffaa; border: 2px solid #6ddb4a; display: block; border-radius: 14px; box-shadow: 0 0 30px rgba(93,192,64,0.35), inset 0 1px 0 rgba(255,255,255,0.1); }
+  .result-banner.wrong { background: linear-gradient(135deg, rgba(120,15,15,0.9), rgba(80,10,10,0.95)); color: #ffd0d0; border: 2px solid #e04545; display: block; border-radius: 14px; box-shadow: 0 0 30px rgba(208,64,64,0.35), inset 0 1px 0 rgba(255,255,255,0.08); }
   .result-banner.special { background: rgba(201,169,110,0.2); color: var(--gold-light); border: 1px solid var(--gold); display: block; }
 
 
@@ -962,6 +971,7 @@
 
     /* ── Propositions : scrollables ── */
     .propositions-list {
+      grid-template-columns: 1fr !important;
       overflow-y: auto !important;
       flex: 0 1 auto !important;
       gap: 8px !important;
@@ -1089,6 +1099,7 @@
       margin-bottom: 6px !important;
     }
     .propositions-list {
+      grid-template-columns: 1fr !important;
       overflow-y: auto !important;
       max-height: 40vh !important;
       gap: 4px !important;
@@ -3282,7 +3293,7 @@ function showQuestionModal(q, cat) {
 
     if (isMultiAnswer) {
       // ── Mode MULTI-RÉPONSES : cases à cocher ──
-      propsHTML = `<div class="propositions-list" id="props-list">
+      propsHTML = `<div class="propositions-list${props.length <= 3 ? ' single-col' : ''}" id="props-list">
         ${props.map(p => {
           const m = p.trim().match(letterRegex);
           const letter = m ? m[1].toUpperCase() : '';
@@ -3300,7 +3311,7 @@ function showQuestionModal(q, cat) {
         </div>`;
     } else {
       // ── Mode UNE SEULE RÉPONSE ──
-      propsHTML = `<div class="propositions-list" id="props-list">
+      propsHTML = `<div class="propositions-list${props.length <= 3 ? ' single-col' : ''}" id="props-list">
         ${props.map(p => {
           const m = p.trim().match(letterRegex);
           const letter = m ? m[1].toUpperCase() : '';
@@ -3331,23 +3342,25 @@ function showQuestionModal(q, cat) {
     ? '<span style="float:right;font-size:clamp(14px,2vh,20px);" title="Points doublés !">🎁 ×2</span>' : '';
 
   content.innerHTML = `
-    <div class="modal-cat ${catClass[cat] || 'cat-autres'}">${catLabels[cat] || cat}${dpBadge}</div>
+    <div style="display:flex;align-items:center;gap:clamp(8px,1.5vw,16px);margin-bottom:clamp(6px,1vh,12px);flex-shrink:0;">
+      <div class="modal-cat ${catClass[cat] || 'cat-autres'}" style="margin-bottom:0;">${catLabels[cat] || cat}${dpBadge}</div>
+      ${indiceText ? '<div style="background:linear-gradient(135deg,#2D5016,#1a3a0e);border:1px solid #4a8a2a;border-radius:20px;padding:4px 14px;font-size:clamp(10px,1.3vh,13px);color:#c8e6a0;white-space:nowrap;"><span style="margin-right:4px;">💡</span>' + indiceText + '</div>' : ''}
+    </div>
     <div class="modal-question">${q.question}</div>
-    ${indiceText ? '<div style="background:linear-gradient(135deg,#2D5016,#1a3a0e);border:1px solid #4a8a2a;border-radius:8px;padding:8px 14px;margin-bottom:8px;font-size:clamp(11px,1.5vh,15px);color:#c8e6a0;text-align:center;"><span style="margin-right:6px;">💡</span><b>Indice :</b> ' + indiceText + '</div>' : ''}
-    <div class="modal-body-row" style="display:flex;gap:clamp(10px,1.8%,20px);align-items:stretch;flex:1;overflow:hidden;min-height:0;">
-      <div class="modal-props-col" style="flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;min-height:0;">
+    <div class="modal-body-row" style="display:flex;gap:clamp(12px,2%,24px);align-items:stretch;flex:1;overflow:hidden;min-height:0;">
+      <div class="modal-props-col" style="flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;min-height:0;justify-content:center;">
         ${propsHTML}
         ${hintsHTML}
       </div>
-      <div id="result-panel" style="flex:0 0 42%;min-width:160px;max-width:380px;display:flex;flex-direction:column;gap:clamp(6px,1vh,10px);overflow:hidden;min-height:0;">
-        <div id="answer-area" style="display:none;flex-shrink:1;min-height:0;">
+      <div id="result-panel" style="flex:0 0 44%;min-width:180px;max-width:420px;display:flex;flex-direction:column;gap:clamp(8px,1.2vh,14px);overflow:hidden;min-height:0;justify-content:center;">
+        <div id="answer-area" style="display:none;">
           <div class="answer-area">
-            <div class="answer-label">✅ Réponse</div>
+            <div class="answer-label">✅ RÉPONSE CORRECTE</div>
             <div class="answer-text">${q.reponse}</div>
           </div>
         </div>
-        <div id="result-zone" style="flex-shrink:0;"></div>
-        <div id="continue-btn" style="flex-shrink:0;margin-top:auto;"></div>
+        <div id="result-zone"></div>
+        <div id="continue-btn" style="margin-top:auto;"></div>
       </div>
     </div>
   `;
